@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<head>
+    <title>Assignment 1</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: rgb(194, 253, 184);
+        }
+        .navBar{
+
+            display: flex;
+            flex-direction: row;
+            background-color: rgb(46, 137, 46);
+        }
+        .inner {
+            background-color: rgb(72, 190, 72);
+
+            margin: 0;
+            display: none;
+            position: absolute;
+
+        }
+        .outer:hover .inner{
+            background-color: rgb(72, 190, 72);
+            display: flex;
+            flex-direction: column;
+        }
+        .outer:hover{
+            background-color: rgb(72, 190, 72);
+        }
+        nav input{
+            position: absolute;
+            top: -1000000px;
+        }
+        h2, label{
+            display: block;
+            margin: 0;
+            padding: 3px 7px;
+            min-width: 100px;
+            font-size: large;
+        }
+        nav a{
+            display: block;
+            padding: 5px 10px;
+            text-decoration: none;
+        }
+        .Notifications {
+            max-width: 1000;
+            margin: 0 auto;
+        }
+        h3 {
+            margin: 0;
+        }
+        .top{
+            background-color: white;
+            border-left: 5px solid green;
+            padding: 20px;
+            margin: 25px;
+        }
+        .bottom{
+            background-color: white;
+            border-left: 5px solid yellow;
+            padding: 20px;
+            margin: 25px;
+        }
+    </style>
+</head>
+<body>
+    <nav class = "navBar">
+        <div class = "outer">
+            <h2>File</h2>
+            <div class = "inner">
+                <a href="">New</a>
+                <a href="">Open</a>
+                <a href="">Save</a>
+                <a href="">Print</a>
+                <a href="">Close</a>
+            </div>
+        </div>
+        <div class = "outer">
+            <label>
+                <input>
+                <h2>Edit</h2>
+            </label>
+            <div class = "inner">
+                <a href="">Undo</a>
+                <a href="">Redo</a>
+                <a href="">Cut</a>
+                <a href="">Copy</a>
+                <a href="">Paste</a>
+                <a href="">Delete</a>
+                <a href="">Select All</a>
+            </div>
+        </div>
+        <div class = "outer">
+            <h2>View</h2>
+            <div class = "inner">
+                <a href="">Zoom In</a>
+                <a href="">Zoom Out</a>
+                <a href="">Actual Size</a>
+                <a href="">Fit Page</a>
+                <a href="">Fit Width</a>
+                <a href="">Fit Height</a>
+                <a href="">Rotate Left</a>
+                <a href="">Rotate Right</a>
+                <a href="">Full Screen</a>
+            </div>
+        </div>
+    </nav>
+</body>
+<body>
+    <div class = "Notifications">
+        <div class = "top">
+            <h3>Instructions</h3>
+            <p>Recreate this page using only CSS. Do yourself a favor and 1)
+                 Do not view the source. Figure it out yourself. 2)
+                 Do not search for the solution. Learn CSS until you know enough 
+                 to do this.</p>
+        </div>
+        <div class = "bottom">
+            <h3>Extra Credit</h3>
+            <p>Notice how the Edit menu (besides for not being bold) reacts to clicks.
+                 If you click the edit menu, it remains open until you click somewhere else.
+                  (This you might need to search for)</p>
+        </div>
+    </div>
+</body>
