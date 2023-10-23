@@ -1,0 +1,11 @@
+{
+  "name": "fit_net",
+  "version": "1.0.0",
+  "description": "fitnet is a app to track fitness throughout the day and keep up to date with friends ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
