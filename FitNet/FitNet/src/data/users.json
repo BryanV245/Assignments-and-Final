@@ -17,18 +17,6 @@
         "postalCode": "20020",
         "state": "DC"
       },
-      "exercises": [
-        { "Running": 12345 },
-        { "Jogging": 14567 },
-        { "Hiking": 11456 },
-        { "Boxing": 13345 },
-        { "Cycling": 15450 },
-        { "Swimming": 15780 },
-        { "Aerobics": 12030 },
-        { "Weight Lifting": 13890 },
-        { "Yoga": 11700 },
-        { "Pilates": 14450 }
-      ],
       "weight": 75.4
     },
     {
@@ -48,18 +36,6 @@
         "postalCode": "40219",
         "state": "KY"
       },
-      "exercises": [
-        { "Running": 12345 },
-        { "Jogging": 14567 },
-        { "Hiking": 11456 },
-        { "Boxing": 13345 },
-        { "Cycling": 15450 },
-        { "Swimming": 15780 },
-        { "Aerobics": 12030 },
-        { "Weight Lifting": 13890 },
-        { "Yoga": 11700 },
-        { "Pilates": 14450 }
-      ],
       "weight": 74
     },
     {
@@ -79,18 +55,6 @@
         "postalCode": "95945",
         "state": "CA"
       },
-      "exercises": [
-        { "Running": 11234 },
-        { "Jogging": 12567 },
-        { "Hiking": 13456 },
-        { "Boxing": 12345 },
-        { "Cycling": 15460 },
-        { "Swimming": 13780 },
-        { "Aerobics": 13030 },
-        { "Weight Lifting": 11890 },
-        { "Yoga": 12700 },
-        { "Pilates": 13460 }
-      ],
       "weight": 105.3
     },
     {
@@ -110,18 +74,6 @@
         "postalCode": "40206",
         "state": "KY"
       },
-      "exercises": [
-        { "Running": 14234 },
-        { "Jogging": 13567 },
-        { "Hiking": 15456 },
-        { "Boxing": 14345 },
-        { "Cycling": 16450 },
-        { "Swimming": 15790 },
-        { "Aerobics": 14030 },
-        { "Weight Lifting": 14890 },
-        { "Yoga": 13700 },
-        { "Pilates": 14460 }
-      ],
       "weight": 95.9
     },
     {
@@ -141,18 +93,6 @@
         "postalCode": "05452",
         "state": "VT"
       },
-      "exercises": [
-        { "Running": 13234 },
-        { "Jogging": 14577 },
-        { "Hiking": 14456 },
-        { "Boxing": 15365 },
-        { "Cycling": 15470 },
-        { "Swimming": 14790 },
-        { "Aerobics": 14040 },
-        { "Weight Lifting": 13880 },
-        { "Yoga": 14700 },
-        { "Pilates": 14470 }
-      ],
       "weight": 105.7
     },
     {
@@ -172,18 +112,6 @@
         "postalCode": "94591",
         "state": "CA"
       },
-      "exercises": [
-        { "Running": 12234 },
-        { "Jogging": 13577 },
-        { "Hiking": 14446 },
-        { "Boxing": 13365 },
-        { "Cycling": 14470 },
-        { "Swimming": 14710 },
-        { "Aerobics": 14050 },
-        { "Weight Lifting": 13870 },
-        { "Yoga": 13710 },
-        { "Pilates": 14410 }
-      ],
       "weight": 78.1
     },
     {
@@ -203,18 +131,6 @@
         "postalCode": "05452",
         "state": "VT"
       },
-      "exercises": [
-        { "Running": 12244 },
-        { "Jogging": 13587 },
-        { "Hiking": 14436 },
-        { "Boxing": 13355 },
-        { "Cycling": 14460 },
-        { "Swimming": 14700 },
-        { "Aerobics": 14060 },
-        { "Weight Lifting": 13860 },
-        { "Yoga": 13720 },
-        { "Pilates": 14420 }
-      ],
       "weight": 105.7
     }
   ]

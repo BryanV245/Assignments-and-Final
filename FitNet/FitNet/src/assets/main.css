@@ -1,2 +1,32 @@
 @import url('bulma/css/bulma.css');
 @import url('@fortawesome/fontawesome-free/css/all.css');
+
+
+body, .columns, .columnm, main, .container{
+  background-color: #222;
+} 
+.container2{
+  height: 75vh;
+}
+.card, .box {
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 127, 255, 0.6);
+
+  background-color: #333;
+}
+
+.card-footer {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.card-header {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+
+body, h1, h2, p, .title, .subtitle,.box,.card, button{
+  color: #2d79a2cf;
+}
+

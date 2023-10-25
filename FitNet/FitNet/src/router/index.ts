@@ -25,7 +25,7 @@ const router = createRouter({
       path: "/Admin",
       name: "Admin",
       component: () => import("../views/Admin.vue"),
-      beforeEnter: requireLogin,
+      beforeEnter: requireAdmin,
     },
     {
       path: "/Social",
@@ -49,6 +49,18 @@ function requireLogin(to: RouteLocationNormalized, from: RouteLocationNormalized
     session.redirectUrl = to.fullPath;
     next('/login');
   }else{
+    next();
+  }
+}
+
+function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
+  const session = getSession();
+  if (!session.user) {
+    session.redirectUrl = to.fullPath;
+    next({ name: "login" });
+  } else if (to.name === "Admin" && session.user.role !== "admin") {
+    next({ name: "Dashboard" });
+  } else {
     next();
   }
 }

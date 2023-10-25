@@ -1,144 +1,63 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { getSession, useLogin } from '@/model/session';
+import { ref, onMounted, computed } from 'vue';
+import { getSession } from '@/model/session';
 
-const session = getSession();
-const router = useRouter();
+const currentUser = getSession().user; 
+const userID = ref(currentUser?.id ? currentUser.id : 'default');
+const userWorkoutKey = `customWorkouts_${userID.value}`;
 
+const todayDayName = new Date().toLocaleString('en-US', { weekday: 'long' });
 
+const weeklyWorkouts = [
+  { day: 'Sunday', caloriesBurned: 0 },
+  { day: 'Monday', caloriesBurned: 0 },
+  { day: 'Tuesday', caloriesBurned: 0 },
+  { day: 'Wednesday', caloriesBurned: 0 },
+  { day: 'Thursday', caloriesBurned: 0 },
+  { day: 'Friday', caloriesBurned: 0 },
+  { day: 'Saturday', caloriesBurned: 0 }
+];
 
-document.addEventListener("DOMContentLoaded", function() {
-    const workouts = [
-        { day: 'Monday', caloriesBurned: 500 },
-        { day: 'Tuesday', caloriesBurned: 450 },
-        { day: 'Wednesday', caloriesBurned: 600 },
-        { day: 'Thursday', caloriesBurned: 520 },
-        { day: 'Friday', caloriesBurned: 490 },
-        { day: 'Saturday', caloriesBurned: 700 },
-        { day: 'Sunday', caloriesBurned: 480 },
-    ];
+const customWorkouts = ref<Array<{workout: string, caloriesBurned: number, date: Date}>>([]);
 
-    const workoutStatsDiv = document.getElementById('workout-stats');
-
-    if (!workoutStatsDiv) {
-        console.error("Element with ID 'workout-stats' not found!");
-        return;
-    }
-    workouts.forEach(workout => {
-        const columnDiv = document.createElement('div');
-        columnDiv.className = 'column is-one-sixth has-text-centered';
-        
-        const dayHeader = document.createElement('h2');
-        dayHeader.className = 'subtitle';
-        dayHeader.textContent = workout.day;
-        
-        const calorieDiv = document.createElement('div');
-        calorieDiv.className = 'box';
-        calorieDiv.textContent = `${workout.caloriesBurned} cal`;
-
-        columnDiv.appendChild(dayHeader);
-        columnDiv.appendChild(calorieDiv);
-        workoutStatsDiv.appendChild(columnDiv);
-    });
+onMounted(() => {
+  const storedWorkouts = JSON.parse(localStorage.getItem(userWorkoutKey) || '[]');
+  customWorkouts.value = storedWorkouts.map((workoutStr: string) => {
+    const parts = workoutStr.split(' - ');
+    return {
+      workout: parts[1],
+      caloriesBurned: parseInt(parts[3].split(' ')[0], 10),
+      date: new Date(parts[0])
+    };
+  });
+  loadWeeklyCalories();
 });
 
+const today = new Date();
+const lastSunday = new Date(today);
+lastSunday.setDate(today.getDate() - today.getDay());
 
+const weeklyCustomWorkouts = computed(() => {
+  return customWorkouts.value.filter(workout => workout.date >= lastSunday && workout.date <= today);
+});
 
-document.addEventListener("DOMContentLoaded", function() {
-
-const loadWorkouts = async () => {
-
-    try {
-        const response = await fetch('/path-to-your-json.json'); // replace with your actual path
-        const data = await response.json();
-
-                  interface Exercise {
-              [key: string]: number;
-          }
-          const workouts = data.users[0].exercises.map((exercise: Exercise) => ({
-              workout: Object.keys(exercise)[0],
-              caloriesBurned: Object.values(exercise)[0]
-          }));
-
-        const AllTimeStats = document.getElementById('all-time-stats');
-        if (!AllTimeStats) {
-            console.error("Element with ID 'all-time-stats' not found!");
-            return;
-          }
-
-              interface Workout {
-              workout: string;
-              caloriesBurned: number;
-            }
-
-            workouts.forEach((workout: Workout) => {
-            const columnDiv = document.createElement('div');
-            columnDiv.className = 'column is-one-sixth has-text-centered';
-            
-            const WorkoutHeader = document.createElement('h2');
-            WorkoutHeader.className = 'subtitle';
-            WorkoutHeader.textContent = workout.workout;
-            
-            const calorieDiv = document.createElement('div');
-            calorieDiv.className = 'box';
-            calorieDiv.textContent = `${workout.caloriesBurned} cal`;
-
-            columnDiv.appendChild(WorkoutHeader);
-            columnDiv.appendChild(calorieDiv);
-            AllTimeStats.appendChild(columnDiv);
-        });
-    } catch (error) {
-        console.error('Failed to fetch workouts:', error);
-    }
+const loadWeeklyCalories = () => {
+  weeklyWorkouts.forEach(weekday => {
+    const totalCalories = weeklyCustomWorkouts.value.filter(workout => {
+      return workout.date.toLocaleString('en-US', { weekday: 'long' }) === weekday.day;
+    }).reduce((total, workout) => total + workout.caloriesBurned, 0);
+    weekday.caloriesBurned = totalCalories;
+  });
 };
 
-loadWorkouts();
+const weeklyCaloriesBurned = computed(() => {
+  return weeklyCustomWorkouts.value.reduce((acc, curr) => acc + curr.caloriesBurned, 0);
 });
-
-
-
-
-// document.addEventListener("DOMContentLoaded", function() {
-//     const workouts = [
-//         { workout: 'Running', caloriesBurned: 4000 },
-//         { workout: 'Swimming', caloriesBurned: 5000 },
-//         { workout: 'Rowing', caloriesBurned: 7000 },
-//         { workout: 'Boxing', caloriesBurned: 399 },
-//         { workout: 'Weight Lifting', caloriesBurned: 490 },
-//         { workout: 'Walking', caloriesBurned: 700 },
-//         { workout: 'Yoga', caloriesBurned: 480 },
-//     ];
-
-//     const AllTimeStats = document.getElementById('all-time-stats');
-//     if (!AllTimeStats) {
-//         console.error("Element with ID 'workout-stats' not found!");
-//         return;
-//     }
-
-//     workouts.forEach(workout => {
-//         const columnDiv = document.createElement('div');
-//         columnDiv.className = 'column is-one-sixth has-text-centered';
-        
-//         const  WorkoutHeader = document.createElement('h2');
-//         WorkoutHeader.className = 'subtitle';
-//         WorkoutHeader.textContent = workout.workout;
-        
-
-//         const calorieDiv = document.createElement('div');
-//         calorieDiv.className = 'box';
-//         calorieDiv.textContent = `${workout.caloriesBurned} cal`;
-
-//         columnDiv.appendChild(WorkoutHeader);
-//         columnDiv.appendChild(calorieDiv);
-//         AllTimeStats.appendChild(columnDiv);
-//     });
-// });
-
-
 </script>
 
+
 <template>
+
   <main class="columns is-multiline is-centered">
     <div class = "column is-one-quarter">
       <div class="card">
@@ -161,7 +80,7 @@ loadWorkouts();
         <footer class="card-footer">
           <p class="card-footer-item">
             <span>
-              View Details
+              Set Goal
             </span>
           </p>
           <p class="card-footer-item">
@@ -174,29 +93,83 @@ loadWorkouts();
     </div>
 
 
-    <div class = "column is-three-quarters">
-      <div class = "card">
-        <title> Weelly Calorie Burn Progress</title>
-        <section class="section">
-        <div class="container">
-            <h1 class="title has-text-centered">Weekly Calorie Burn Progress</h1>
-            <div id="workout-stats" class="columns is-multiline"></div>
-        </div>
-        </section>
-        <div class = "card">
-          <title> All Time stats</title>
-          <section class="section">
-          <div class="container">
-              <h1 class="title has-text-centered">All Time stats</h1>
-              <div id="all-time-stats" class="columns is-multiline"></div>
-          </div>
-          </section>
+    <div class="column is-three-quarters">
+  <div class="container">
+    <h1 class="title has-text-centered">Weekly Calorie Burn Progress</h1>
+    <p class="subtitle has-text-centered">{{ weeklyCaloriesBurned }} cal burned since last Sunday</p> 
+    <div class="columns is-multiline">
+      <div v-for="workout in weeklyWorkouts" :key="workout.day" class="column is-one-sixth has-text-centered">
+        <h2 class="subtitle">{{ workout.day }}</h2>
+        <div class="box">{{ workout.caloriesBurned }} cal</div>
+      </div>
     </div>
-    </div>
-    </div>
+  </div>
+</div>
 
-    
+<div class="column is-three-quarters">
+  <div class="container2">
+    <h1 class="title has-text-centered">Recent Workouts</h1>
+    <div class="columns is-multiline">
+      <div v-for="workout in customWorkouts" :key="workout.workout" class="column is-one-sixth has-text-centered"> 
+        <h2 class="subtitle">{{ workout.workout }}</h2>
+        <div class="box">{{ workout.caloriesBurned }} cal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   </main>
 
 
+  <div class="columns is-multiline">
+    <div 
+      v-for="workout in weeklyWorkouts" 
+      :key="workout.day" 
+      class="column is-one-sixth has-text-centered"
+      :class="{ 'current-day': workout.day === todayDayName }"
+    >
+      <h2 class="subtitle">{{ workout.day }}</h2>
+      <div class="box">{{ workout.caloriesBurned }} cal</div>
+    </div>
+  </div>
 </template>
+
+<style scoped>
+
+
+
+
+.current-day {
+  box-shadow: 0px 0px 10px 2px red;
+}
+
+.workout-card {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: center;
+  position: relative; 
+  cursor: pointer;
+  transition: transform 0.2s; 
+}
+
+.workout-card:hover {
+  transform: scale(1.05); 
+}
+
+.workout-card::after {
+  content: '+'; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  opacity: 0; 
+  transition: opacity 0.2s; 
+}
+
+.workout-card:hover::after {
+  opacity: 1; 
+}
+</style>

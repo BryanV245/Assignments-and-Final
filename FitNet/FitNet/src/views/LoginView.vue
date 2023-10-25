@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { getSession } from '@/model/session';
 
 interface User {
   email: string;
@@ -24,6 +25,8 @@ const doSignUp = () => {
 </script>
 
 <template>
+  
+
   <div class="hero-body">
     <div class="column is-half is-offset-one-quarter">
       <div class="box">

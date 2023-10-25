@@ -3,6 +3,15 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import LoginBadge from './LoginBadge.vue';
 
+import { useRouter } from 'vue-router';
+import { getSession, useLogin } from '@/model/session';
+
+const session = getSession();
+const router = useRouter();
+
+const userRole = session?.user?.role;
+
+
 const isActive = ref(false);
 </script>
 

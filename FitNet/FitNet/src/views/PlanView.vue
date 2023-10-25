@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { type User, getUserByEmail } from "@/model/users";
+import { getSession } from "@/model/session";
+
+const user = getSession().user;
+
+
 
 const exerciseName = ref('');
 const exerciseDuration = ref('');
@@ -13,28 +19,55 @@ const defaultWorkouts = [
 
 const customWorkouts = ref<string[]>([]);
 
+const currentUser = getSession().user; 
+const userID = ref(currentUser?.id? currentUser.id : 'default');
+const userWorkoutKey = `customWorkouts_${userID.value}`;
+
+
+onMounted(() => {
+  const storedWorkouts = JSON.parse(localStorage.getItem(userWorkoutKey) || '[]');
+  customWorkouts.value = storedWorkouts;
+});
+
 const addExercise = () => {
   customWorkouts.value.push(`${exerciseDate.value} - ${exerciseName.value} - ${exerciseDuration.value} - ${exerciseCalories.value} calories`);
+  localStorage.setItem(userWorkoutKey, JSON.stringify(customWorkouts.value));
   exerciseName.value = '';
   exerciseDuration.value = '';
   exerciseCalories.value = '';
   exerciseDate.value = '';  
   showModal.value = false;
 };
+
+
+
+const deleteExercise = (index: number) => {
+  customWorkouts.value.splice(index, 1);
+  localStorage.setItem(userWorkoutKey, JSON.stringify(customWorkouts.value));
+};
 </script>
 
+
+
+
 <template>
-  <div class="container">
+  <div class="container3">
     <h1>Workout Planner</h1>
 
     <ul class="workout-list">
-
-      <li v-for="workout in defaultWorkouts" :key="workout.name">{{ workout.name }} - {{ workout.duration }} - {{ workout.calories }} calories</li>
-
-      <li v-for="workout in customWorkouts" :key="workout">{{ workout }}</li>
+      <li v-for="workout in defaultWorkouts" :key="workout.name">
+        {{ workout.name }} - {{ workout.duration }} - {{ workout.calories }} calories
+      </li>
+      <li v-for="(workout, index) in customWorkouts" :key="workout">
+        {{ workout }}
+        
+        <button class="delete-button" @click="deleteExercise(index)">Delete</button>
+      </li>
     </ul>
-    
-    <button class="button is-primary" @click="showModal = true">Add Workout</button>
+
+    <div class="add-workout">
+      <button class="button is-link" @click="showModal = true">Add Workout</button>
+    </div>
 
 
     <div class="modal" :class="{ 'is-active': showModal }">
@@ -79,32 +112,95 @@ const addExercise = () => {
     </div>
   </div>
 </template>
-
 <style scoped>
-.container {
-  max-width: 600px;
+body, html {
+  background-color: #444;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+.container3 {
+  max-width: 500px;
   margin: 2rem auto;
-  padding: 20px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
-  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 0 20px rgba(0, 127, 255, 0.6);
+  background-color: #444;
+  border-radius: 10px;
+  color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80vh;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 1rem;
-  font-weight: bold;
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+  color: #f9f9f9;
 }
 
 .workout-list {
   list-style-type: none;
-  padding-left: 0;
+  padding: 0;
+  overflow-y: auto;
+  max-height: 50vh;
 }
 
 .workout-list li {
   padding: 10px;
-  border: 1px solid #e2e2e2;
+  border: 1px solid #555;
   border-radius: 6px;
-  margin-top: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 8px rgba(0, 127, 255, 0.6);
 }
+
+.add-workout {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.button {
+  background-color: #406e8f;
+  color: #f9f9f9;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #305d6e;
+}
+
+.modal-card {
+  background-color: #333;
+  color: #f9f9f9;
+  box-shadow: 0 0 18px rgba(0, 127, 255, 0.6);
+  border-radius: 6px;
+}
+
+.modal-card-head, .modal-card-foot {
+  background-color: #444;
+  border: none;
+  padding: 10px;
+}
+
+.modal-card-body {
+  padding: 15px;
+}
+
+.input {
+  background-color: #444;
+  color: #f9f9f9;
+  border: none;
+  padding: 8px;
+}
+
+.input::placeholder {
+  color: #999;
+}
+
 </style>

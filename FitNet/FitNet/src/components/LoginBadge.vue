@@ -7,6 +7,9 @@ interface User {
   email: string;
   password: string;
 }
+interface Props {
+  role: string;
+}
 
 const session = getSession();
 const { login, logout } = useLogin();
