@@ -98,9 +98,14 @@ const weeklyCaloriesBurned = computed(() => {
         <h1 class="title has-text-centered">Weekly Calorie Burn Progress</h1>
         <p class="subtitle has-text-centered">{{ weeklyCaloriesBurned }} cal burned since last Sunday</p> 
         <div class="columns is-multiline">
-          <div v-for="workout in weeklyWorkouts" :key="workout.day" class="column is-one-sixth has-text-centered">
-            <h2 class="subtitle">{{ workout.day }}</h2>
-            <div class="box">{{ workout.caloriesBurned }} cal</div>
+          <div 
+          v-for="workout in weeklyWorkouts" 
+          :key="workout.day" 
+          class="column is-one-sixth has-text-centered"
+          :class="{ 'current-day': workout.day === todayDayName }"
+        >
+          <h2 class="subtitle">{{ workout.day }}</h2>
+          <div class="box">{{ workout.caloriesBurned }} cal</div>
           </div>
         </div>
       </div>
@@ -110,7 +115,11 @@ const weeklyCaloriesBurned = computed(() => {
   <div class="container2">
     <h1 class="title has-text-centered">Recent Workouts</h1>
     <div class="columns is-multiline">
-      <div v-for="workout in customWorkouts" :key="workout.workout" class="column is-one-sixth has-text-centered"> 
+      <div 
+      v-for="workout in customWorkouts" 
+      :key="workout.workout" 
+      class="column is-one-sixth has-text-centered"
+      > 
         <h2 class="subtitle">{{ workout.workout }}</h2>
         <div class="box">{{ workout.caloriesBurned }} cal</div>
       </div>
@@ -120,19 +129,6 @@ const weeklyCaloriesBurned = computed(() => {
 
 
   </main>
-
-
-  <div class="columns is-multiline">
-    <div 
-      v-for="workout in weeklyWorkouts" 
-      :key="workout.day" 
-      class="column is-one-sixth has-text-centered"
-      :class="{ 'current-day': workout.day === todayDayName }"
-    >
-      <h2 class="subtitle">{{ workout.day }}</h2>
-      <div class="box">{{ workout.caloriesBurned }} cal</div>
-    </div>
-  </div>
 </template>
 
 <style scoped>
