@@ -8,8 +8,6 @@ const session = reactive({
   redirectUrl: null as string | null,
 })
 
-
-
 export function getSession(){
   return session;
 }

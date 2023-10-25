@@ -6,19 +6,22 @@ import { getSession } from "@/model/session";
 const user = getSession().user;
 
 
-
+//sets user data
 const exerciseName = ref('');
 const exerciseDuration = ref('');
 const exerciseCalories = ref('');
 const exerciseDate = ref('');  
 const showModal = ref(false);
 
+//shows defoult woukouts
 const defaultWorkouts = [
   { name: "Running", duration: "30 minutes", calories: "300" }
 ];
 
+//woukout array
 const customWorkouts = ref<string[]>([]);
 
+//gets user data
 const currentUser = getSession().user; 
 const userID = ref(currentUser?.id? currentUser.id : 'default');
 const userWorkoutKey = `customWorkouts_${userID.value}`;
@@ -29,6 +32,8 @@ onMounted(() => {
   customWorkouts.value = storedWorkouts;
 });
 
+
+//adds excersise to array
 const addExercise = () => {
   customWorkouts.value.push(`${exerciseDate.value} - ${exerciseName.value} - ${exerciseDuration.value} - ${exerciseCalories.value} calories`);
   localStorage.setItem(userWorkoutKey, JSON.stringify(customWorkouts.value));
@@ -40,7 +45,7 @@ const addExercise = () => {
 };
 
 
-
+//delete exercise
 const deleteExercise = (index: number) => {
   customWorkouts.value.splice(index, 1);
   localStorage.setItem(userWorkoutKey, JSON.stringify(customWorkouts.value));

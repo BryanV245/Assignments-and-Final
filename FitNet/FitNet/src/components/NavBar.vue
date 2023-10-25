@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue'; 
 import { RouterLink } from 'vue-router';
 import LoginBadge from './LoginBadge.vue';
-
 import { useRouter } from 'vue-router';
 import { getSession, useLogin } from '@/model/session';
 
-const session = getSession();
-const router = useRouter();
+// get the session and assign to a reactive ref
+const session = ref(getSession());
 
-const userRole = session?.user?.role;
-
+// pull user role using a computed , which is also reactive
+const userRole = computed(() => session.value?.user?.role);
 
 const isActive = ref(false);
 </script>
@@ -20,7 +19,6 @@ const isActive = ref(false);
     <div class="navbar-brand">
       <a class="navbar-item" href="https://bulma.io">
         <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="28" height="28" />
-
       </a>
 
       <a role="button" class="navbar-burger" :class="{ 'is-active': isActive }" @click="isActive = !isActive" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -36,30 +34,7 @@ const isActive = ref(false);
         <RouterLink class="navbar-item" to="/Social">Social</RouterLink>
         <RouterLink class="navbar-item" to="/Plan">Plan</RouterLink>
         <RouterLink class="navbar-item" to="/MyProfile">My Profile</RouterLink>
-        <RouterLink class="navbar-item" to="/Admmin">Admin</RouterLink>
-
-        
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            More
-          </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              About
-            </a>
-            <a class="navbar-item">
-              Jobs
-            </a>
-            <a class="navbar-item">
-              Contact
-            </a>
-            <hr class="navbar-divider">
-            <a class="navbar-item">
-              Report an issue
-            </a>
-          </div>
-        </div>
+        <RouterLink v-if="userRole === 'admin'" class="navbar-item" to="/Admmin">Admin</RouterLink>
       </div>
 
       <div class="navbar-end">
@@ -74,8 +49,8 @@ const isActive = ref(false);
   </nav>
  
 </template>
-<style scoped>
 
+<style scoped>
 .router-link-active {
   font-weight: bold;
   border-bottom: 2px solid #00d1b2;

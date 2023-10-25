@@ -4,15 +4,18 @@ import data from "../data/users.json";
 
 
 export interface User {
-  id?: number,
+  id: number,
   firstName: string,
   lastName: string,
   email: string,
   password: string,
   role: "admin" | "user",
-  token?: string
-
+  token?: string,
+  image?: string,
+  age?: number,
+  weight?: number
 }
+
 
 
 export function getUsers(): User[] {

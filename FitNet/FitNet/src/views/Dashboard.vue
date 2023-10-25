@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { getSession } from '@/model/session';
+import { RouterLink } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { watch } from 'vue';
+
+
+
+
+
 
 const currentUser = getSession().user; 
 const userID = ref(currentUser?.id ? currentUser.id : 'default');
 const userWorkoutKey = `customWorkouts_${userID.value}`;
-
 const todayDayName = new Date().toLocaleString('en-US', { weekday: 'long' });
+const userCalorieGoalKey = `calorieGoal_${userID.value}`;
+const weeklyCaloriesBurnedKey = `weeklyCaloriesBurned_${userID.value}`;
+
+
 
 const weeklyWorkouts = [
   { day: 'Sunday', caloriesBurned: 0 },
@@ -33,6 +44,16 @@ onMounted(() => {
   loadWeeklyCalories();
 });
 
+
+onMounted(() => {
+    const savedGoal = localStorage.getItem(userCalorieGoalKey);
+    if (savedGoal) {
+        calorieGoal.value = parseInt(savedGoal, 10);
+    }
+});
+
+
+
 const today = new Date();
 const lastSunday = new Date(today);
 lastSunday.setDate(today.getDate() - today.getDay());
@@ -53,44 +74,91 @@ const loadWeeklyCalories = () => {
 const weeklyCaloriesBurned = computed(() => {
   return weeklyCustomWorkouts.value.reduce((acc, curr) => acc + curr.caloriesBurned, 0);
 });
+
+
+watch(weeklyCaloriesBurned, (newValue) => {
+  localStorage.setItem(weeklyCaloriesBurnedKey, newValue.toString());
+});
+
+
+
+
+
+
+
+const isModalOpen = ref(false);
+const calorieGoal = ref(0); 
+const router = useRouter();
+
+
+const handleSetGoalClick = () => {
+    isModalOpen.value = true;
+};
+
+
+const saveGoal = () => {
+    localStorage.setItem( userCalorieGoalKey, calorieGoal.value.toString());
+    isModalOpen.value = false; 
+};
+
+
+
+const handleShareClick = () => {
+    router.push('/Social');
+}
+
 </script>
 
 
 <template>
 
   <main class="columns is-multiline is-centered">
-    <div class = "column is-one-quarter">
+    <div class="column is-one-quarter">
       <div class="card">
-        <div class="card-content">
-          <p class="title">
-            Weekly Calorie Burn Progress
-          </p>
-          <p class="subtitle">
-            3500 cal
-          </p>
-
-          <p class="title">
-            Weekly Calorie Burn Goal
-          </p>
-          <p class="subtitle">
-            5000 cal
-          </p>
-          <progress class="progress is-link" value="70" max="100">70%</progress>
-        </div>
-        <footer class="card-footer">
-          <p class="card-footer-item">
-            <span>
-              Set Goal
-            </span>
-          </p>
-          <p class="card-footer-item">
-            <span>
-              Share
-            </span>
-          </p>
+          <div class="card-content">
+              <p class="title">
+                  Weekly Calorie Burn Progress
+              </p>
+              <p class="subtitle">
+                  {{weeklyCaloriesBurned}} cal
+              </p>
+  
+              <p class="title">
+                  Weekly Calorie Burn Goal
+              </p>
+              <p class="subtitle">
+                  {{ calorieGoal }} cal
+              </p>
+              <progress class="progress is-link" :value="weeklyCaloriesBurned" :max="calorieGoal"></progress>
+            </div>
+          <footer class="card-footer">
+            <p class="card-footer-item">
+                <button class="button is-link" @click="handleSetGoalClick">Set Goal</button>
+            </p>
+            <p class="card-footer-item">
+                <button class="button is-link" @click="handleShareClick">Share</button>
+            </p>
         </footer>
       </div>
+  </div>
+
+  <div v-if="isModalOpen" class="modal is-active">
+    <div class="modal-background" @click="isModalOpen = false"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Set Calorie Goal</p>
+            <button class="delete" aria-label="close" @click="isModalOpen = false"></button>
+        </header>
+        <section class="modal-card-body">
+            <input type="number" v-model="calorieGoal" placeholder="Enter your goal in calories">
+        </section>
+        <footer class="modal-card-foot">
+            <button class="button is-success" @click="saveGoal">Save Goal</button>
+            <button class="button" @click="isModalOpen = false">Cancel</button>
+        </footer>
     </div>
+</div>
+  
 
 
     <div class="column is-three-quarters">
