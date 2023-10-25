@@ -1,5 +1,4 @@
 
-
 import data from "../data/users.json";
 
 
@@ -12,6 +11,7 @@ export interface User {
   password: string,
   role: "admin" | "user",
   token?: string
+
 }
 
 
@@ -22,4 +22,3 @@ export function getUsers(): User[] {
 export function getUserByEmail(email: string): User | undefined {
   return getUsers().find( x => x.email === email );
 }
-
