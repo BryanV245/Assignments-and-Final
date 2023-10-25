@@ -94,17 +94,17 @@ const weeklyCaloriesBurned = computed(() => {
 
 
     <div class="column is-three-quarters">
-  <div class="container">
-    <h1 class="title has-text-centered">Weekly Calorie Burn Progress</h1>
-    <p class="subtitle has-text-centered">{{ weeklyCaloriesBurned }} cal burned since last Sunday</p> 
-    <div class="columns is-multiline">
-      <div v-for="workout in weeklyWorkouts" :key="workout.day" class="column is-one-sixth has-text-centered">
-        <h2 class="subtitle">{{ workout.day }}</h2>
-        <div class="box">{{ workout.caloriesBurned }} cal</div>
+      <div class="container">
+        <h1 class="title has-text-centered">Weekly Calorie Burn Progress</h1>
+        <p class="subtitle has-text-centered">{{ weeklyCaloriesBurned }} cal burned since last Sunday</p> 
+        <div class="columns is-multiline">
+          <div v-for="workout in weeklyWorkouts" :key="workout.day" class="column is-one-sixth has-text-centered">
+            <h2 class="subtitle">{{ workout.day }}</h2>
+            <div class="box">{{ workout.caloriesBurned }} cal</div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
 <div class="column is-three-quarters">
   <div class="container2">
