@@ -6,7 +6,7 @@ import { watch } from 'vue';
 
 
 
-
+//set user data
 const currentUser = getSession().user; 
 const userID = ref(currentUser?.id ? currentUser.id : 'default');
 const userWorkoutKey = `customWorkouts_${userID.value}`;
@@ -14,12 +14,12 @@ const todayDayName = new Date().toLocaleString('en-US', { weekday: 'long' });
 const userCalorieGoalKey = `calorieGoal_${userID.value}`;
 const weeklyCaloriesBurnedKey = `weeklyCaloriesBurned_${userID.value}`;
 
-
+//decision for wheter display default or custom workouts
 const displayedWorkouts = computed(() => {
   return currentUser ? customWorkouts.value : defaultWorkouts;
 });
 
-
+//default workouts
 const defaultWorkouts = [
   { workout: 'Swimming', caloriesBurned: 0 },
   { workout: 'Running', caloriesBurned: 0 },
@@ -27,7 +27,7 @@ const defaultWorkouts = [
   { workout: 'Hiking', caloriesBurned: 0 }
 ];
 
-
+//may not use
 const weeklyWorkouts = [
   { day: 'Sunday', caloriesBurned: 0 },
   { day: 'Monday', caloriesBurned: 0 },
@@ -38,8 +38,11 @@ const weeklyWorkouts = [
   { day: 'Saturday', caloriesBurned: 0 }
 ];
 
+
+//custom workouts array
 const customWorkouts = ref<Array<{workout: string, caloriesBurned: number, date: Date}>>([]);
 
+//local storage access for array
 onMounted(() => {
   const storedWorkouts = JSON.parse(localStorage.getItem(userWorkoutKey) || '[]');
   customWorkouts.value = storedWorkouts.map((workoutStr: string) => {
@@ -53,7 +56,7 @@ onMounted(() => {
   loadWeeklyCalories();
 });
 
-
+//saved calory goal
 onMounted(() => {
     const savedGoal = localStorage.getItem(userCalorieGoalKey);
     if (savedGoal) {
@@ -62,15 +65,18 @@ onMounted(() => {
 });
 
 
-
+//sets current day
 const today = new Date();
 const lastSunday = new Date(today);
 lastSunday.setDate(today.getDate() - today.getDay());
 
+
+//chooses days with recorded activity within the last week to show 
 const weeklyCustomWorkouts = computed(() => {
   return customWorkouts.value.filter(workout => workout.date >= lastSunday && workout.date <= today);
 });
 
+//loads weekly calories
 const loadWeeklyCalories = () => {
   weeklyWorkouts.forEach(weekday => {
     const totalCalories = weeklyCustomWorkouts.value.filter(workout => {
@@ -90,28 +96,24 @@ watch(weeklyCaloriesBurned, (newValue) => {
 });
 
 
-
-
-
-
-
+//sets modal for calory goal
 const isModalOpen = ref(false);
 const calorieGoal = ref(0); 
 const router = useRouter();
 
-
+//handler for set goal button
 const handleSetGoalClick = () => {
     isModalOpen.value = true;
 };
 
-
+//handler for save goal
 const saveGoal = () => {
     localStorage.setItem( userCalorieGoalKey, calorieGoal.value.toString());
     isModalOpen.value = false; 
 };
 
 
-
+//handler for share button
 const handleShareClick = () => {
     router.push('/Social');
 }
