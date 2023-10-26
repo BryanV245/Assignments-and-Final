@@ -56,6 +56,8 @@ onMounted(() => {
   margin: 10px 0;
   display: flex;
   align-items: center;
+  background-color: #333;
+
 }
 
 .user-image {
