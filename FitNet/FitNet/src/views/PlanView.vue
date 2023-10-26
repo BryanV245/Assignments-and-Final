@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { type User, getUserByEmail } from "@/model/users";
 import { getSession } from "@/model/session";
 
 const user = getSession().user;

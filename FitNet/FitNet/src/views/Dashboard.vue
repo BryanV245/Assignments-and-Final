@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { getSession } from '@/model/session';
-import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { watch } from 'vue';
-
-
 
 
 

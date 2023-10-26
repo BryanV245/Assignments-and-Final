@@ -11,6 +11,7 @@ body, .columns, .columnm, main, .container{
 .card, .box {
   border-radius: 20px;
   box-shadow: 0 0 15px rgba(0, 127, 255, 0.6);
+  
 
   background-color: #333;
 }

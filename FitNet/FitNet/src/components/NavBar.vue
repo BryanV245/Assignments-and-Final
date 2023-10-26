@@ -2,8 +2,7 @@
 import { ref, computed } from 'vue'; 
 import { RouterLink } from 'vue-router';
 import LoginBadge from './LoginBadge.vue';
-import { useRouter } from 'vue-router';
-import { getSession, useLogin } from '@/model/session';
+import { getSession } from '@/model/session';
 
 // get the session and assign to a reactive ref
 const session = ref(getSession());

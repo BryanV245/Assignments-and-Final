@@ -1,21 +1,5 @@
   <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-  import { getSession, useLogin } from '@/model/session';
-  import UserData from '../data/users.json';
-
-  //sets user data
-  interface User {
-    id: number,
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    role: "admin" | "user",
-    token?: string,
-    image?: string,
-    age?: number,
-    weight?: number
-  }
+  import { getSession } from '@/model/session';
 
 
   //gets logged in user
@@ -52,11 +36,13 @@ import { ref, onMounted, computed } from 'vue';
 
   
   .profile-card {
+    border: 1px solid #e1e1e1a1;
     max-width: 400px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 15px rgba(0, 127, 255, 0.6);
     padding: 20px;
     text-align: center;
+    background-color: #333;
   }
 
   .profile-image {

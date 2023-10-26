@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import UserData from '../data/users.json';
@@ -51,12 +52,14 @@ onMounted(() => {
 
 <style scoped>
 .user-card {
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1a1;
   padding: 10px;
   margin: 10px 0;
   display: flex;
   align-items: center;
   background-color: #333;
+  box-shadow: 0 0 15px rgba(0, 127, 255, 0.6);
+
 
 }
 

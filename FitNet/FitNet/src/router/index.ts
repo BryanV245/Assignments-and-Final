@@ -2,8 +2,7 @@ import { createRouter, createWebHashHistory, type NavigationGuardNext, type Rout
 import Dashboard from '../views/Dashboard.vue'
 import LoginView from '../views/LoginView.vue'
 import { getSession } from '@/model/session';
-import MyProfile from '../views/MyProfile.vue'
-import Admin from '../views/Admin.vue'
+
 
 
 const router = createRouter({
@@ -52,17 +51,5 @@ function requireLogin(to: RouteLocationNormalized, from: RouteLocationNormalized
     next();
   }
 }
-
-// function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
-//   const session = getSession();
-//   if (!session.user) {
-//     session.redirectUrl = to.fullPath;
-//     next({ name: "login" });
-//   } else if (to.name === "Admin" && session.user.role !== "admin") {
-//     next({ name: "Dashboard" });
-//   } else {
-//     next();
-//   }
-// }
 
 export default router
