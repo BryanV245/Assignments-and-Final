@@ -1,15 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import UserData from '../data/users.json';
+import { getUserByEmail, deleteUser,getUsers } from '@/model/users';
 
-type User = {
-  id?: number,
-  email: string;
-  image: string;
-  firstName: string;
-  lastName: string;
-  weeklyCaloriesBurned: number;
-};
 
 // Local storage access
 function getLocalCaloriesBurned(email: string, id: number): number {
@@ -18,32 +10,28 @@ function getLocalCaloriesBurned(email: string, id: number): number {
 }
 
 // Users array
-const users = ref<User[]>([]);
+let usersArray = getUsers().map(user => ({
+  ...user,
+  weeklyCaloriesBurned: getLocalCaloriesBurned(user.email, user.id)
+}));
 
-onMounted(() => {
-  try {
-    users.value = UserData.users.map(user => ({
-      ...user,
-      weeklyCaloriesBurned: getLocalCaloriesBurned(user.email, user.id)
-    }));
-  } catch (error) {
-    console.error('Failed to fetch users:', error);
-  }
-});
 
-const deleteUser = (email: string) => {
-  users.value = users.value.filter(user => user.email !== email);
-}
+const removeUser = async (id: number) => {
+  await deleteUser(id);
+  usersArray = usersArray.filter(user => user.id !== id);
+};
+
+
 </script>
 
 <template>
   <div>
-    <div v-for="user in users" :key="user.email" class="user-card">
+    <div v-for="user in usersArray" :key="user.email" class="user-card">
       <img :src="user.image" alt="User Image" class="user-image">
       <h2>{{ user.firstName + ' ' + user.lastName }}</h2>
       <p>{{ user.email }}</p>
       <p>Weekly Calories Burned: {{ user.weeklyCaloriesBurned }}</p>
-      <button @click="deleteUser(user.email)">Delete</button>
+      <button @click="removeUser(user.id)">Delete</button>
     </div>
   </div>
 </template>

@@ -2,7 +2,6 @@
 import data from "../data/users.json";
 
 
-
 export interface User {
   id: number,
   firstName: string,
@@ -13,7 +12,8 @@ export interface User {
   token?: string,
   image?: string,
   age?: number,
-  weight?: number
+  weight?: number,
+  weeklyCaloriesBurned?: number
 }
 
 
@@ -24,4 +24,12 @@ export function getUsers(): User[] {
 
 export function getUserByEmail(email: string): User | undefined {
   return getUsers().find( x => x.email === email );
+}
+
+export function getUserById(id: number): User | undefined {
+  return getUsers().find( x => x.id === id );
+}
+
+export function deleteUser(id: number): User[] {
+  return getUsers().filter( x => x.id !== id );
 }

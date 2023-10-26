@@ -3,18 +3,25 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getSession, useLogin } from '@/model/session';
 
+
+//sets user info
 interface User {
   email: string;
   password: string;
 }
+
+//user role
 interface Props {
   role: string;
 }
 
+//gets data for logged in user  
 const session = getSession();
 const { login, logout } = useLogin();
 const router = useRouter();
 
+
+//default users
 const users: User[] = [
   { email: 'atuny0@sohu.com', password: '9uQFF1Lh' },
   { email: 'rshawe2@51.la', password: 'OWsTbMUgFc' },
@@ -24,6 +31,7 @@ const users: User[] = [
 
 ];
 
+//dropdown menue for login setting
 const showDropdown = ref(false);
 const newEmail = ref('');
 const newPassword = ref('');
