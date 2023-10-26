@@ -1,28 +1,27 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getUserByEmail, deleteUser,getUsers } from '@/model/users';
+import { ref } from 'vue';
+import { deleteUser, getUsers } from '@/model/users';
 
-
-// Local storage access
 function getLocalCaloriesBurned(email: string, id: number): number {
   const weeklyCaloriesBurnedKey = `weeklyCaloriesBurned_${id}`;
   return parseInt(localStorage.getItem(weeklyCaloriesBurnedKey) || '0', 10);
 }
 
-// Users array
-let usersArray = getUsers().map(user => ({
+
+//formats the users array with calories burned
+const usersArray = ref(getUsers().map(user => ({
   ...user,
   weeklyCaloriesBurned: getLocalCaloriesBurned(user.email, user.id)
-}));
+})));
 
 
+//updates users displayed
 const removeUser = async (id: number) => {
   await deleteUser(id);
-  usersArray = usersArray.filter(user => user.id !== id);
+  usersArray.value = usersArray.value.filter(user => user.id !== id);
 };
-
-
 </script>
+
 
 <template>
   <div>
@@ -35,7 +34,6 @@ const removeUser = async (id: number) => {
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .user-card {
