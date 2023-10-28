@@ -1,7 +1,6 @@
 
 import data from "../data/users.json";
 
-
 export interface User {
   id: number,
   firstName: string,
@@ -16,10 +15,21 @@ export interface User {
   weeklyCaloriesBurned?: number
 }
 
+export let usersArray = getUsersWithCalories();
 
-export let usersArray = getUsers();
 
+export function addUser(user: User): User {
+  usersArray.push(user);
+  return user;
+}
 
+export function getUsersWithCalories(): User[] {
+  return data.users.map(user => ({
+    ...user,
+    role: user.id <= 5 ? 'admin' : 'user',
+    weeklyCaloriesBurned: getLocalCaloriesBurned(user.email, user.id)
+  }));
+}
 
 export function getUsers(): User[] {
   return data.users.map( x => ({ ...x, role: x.id <= 5 ? 'admin' : 'user' }) ) 
@@ -33,10 +43,6 @@ export function getUserById(id: number): User | undefined {
   return getUsers().find( x => x.id === id );
 }
 
-export function deleteUser(id: number): User[] {
-  return getUsers().filter( x => x.id !== id );
-}
-
 
 export function getLocalCaloriesBurned(email: string, id: number): number {
   const weeklyCaloriesBurnedKey = `weeklyCaloriesBurned_${id}`;
@@ -44,7 +50,11 @@ export function getLocalCaloriesBurned(email: string, id: number): number {
 }
 
 
-export const removeUser = async (id: number) => {
+export function deleteUser(id: number): User[] {
+  usersArray = usersArray.filter(x => x.id !== id);
+  return usersArray;
+}
+
+export const removeUser = async (id: number): Promise<void> => {
   await deleteUser(id);
-  usersArray = usersArray.filter(user => user.id !== id);
 };

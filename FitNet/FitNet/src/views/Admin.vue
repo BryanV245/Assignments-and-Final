@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { deleteUser, getUsers, removeUser } from '@/model/users';
-import { usersArray } from '@/model/users';
+import { usersArray, deleteUser } from '@/model/users';
+import type { User } from '@/model/users';
 
+
+const usersIN = ref<User[]>(usersArray);
+
+const handleRemoveUser = async (id: number) => {
+  await deleteUser(id);
+  usersIN.value = usersArray 
+};
 
 
 </script>
@@ -10,12 +17,12 @@ import { usersArray } from '@/model/users';
 
 <template>
   <div>
-    <div v-for="user in usersArray" :key="user.email" class="user-card">
+    <div v-for="user in usersIN" :key="user.email" class="user-card">
       <img :src="user.image" alt="User Image" class="user-image">
       <h2>{{ user.firstName + ' ' + user.lastName }}</h2>
       <p>{{ user.email }}</p>
       <p>Weekly Calories Burned: {{ user.weeklyCaloriesBurned }}</p>
-      <button @click="removeUser(user.id)">Delete</button>
+      <button @click="handleRemoveUser(user.id)">Delete</button>
     </div>
   </div>
 </template>
