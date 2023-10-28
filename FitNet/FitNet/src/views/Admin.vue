@@ -1,25 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { deleteUser, getUsers } from '@/model/users';
-
-function getLocalCaloriesBurned(email: string, id: number): number {
-  const weeklyCaloriesBurnedKey = `weeklyCaloriesBurned_${id}`;
-  return parseInt(localStorage.getItem(weeklyCaloriesBurnedKey) || '0', 10);
-}
+import { deleteUser, getUsers, removeUser } from '@/model/users';
+import { usersArray } from '@/model/users';
 
 
-//formats the users array with calories burned
-const usersArray = ref(getUsers().map(user => ({
-  ...user,
-  weeklyCaloriesBurned: getLocalCaloriesBurned(user.email, user.id)
-})));
 
-
-//updates users displayed
-const removeUser = async (id: number) => {
-  await deleteUser(id);
-  usersArray.value = usersArray.value.filter(user => user.id !== id);
-};
 </script>
 
 

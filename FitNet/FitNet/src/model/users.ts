@@ -17,6 +17,9 @@ export interface User {
 }
 
 
+export let usersArray = getUsers();
+
+
 
 export function getUsers(): User[] {
   return data.users.map( x => ({ ...x, role: x.id <= 5 ? 'admin' : 'user' }) ) 
@@ -33,3 +36,15 @@ export function getUserById(id: number): User | undefined {
 export function deleteUser(id: number): User[] {
   return getUsers().filter( x => x.id !== id );
 }
+
+
+export function getLocalCaloriesBurned(email: string, id: number): number {
+  const weeklyCaloriesBurnedKey = `weeklyCaloriesBurned_${id}`;
+  return parseInt(localStorage.getItem(weeklyCaloriesBurnedKey) || '0', 10);
+}
+
+
+export const removeUser = async (id: number) => {
+  await deleteUser(id);
+  usersArray = usersArray.filter(user => user.id !== id);
+};
