@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import LoginView from '../views/LoginView.vue'
-import { getSession } from '@/model/session';
+import { getSession } from '../model/session';
 
 
 
