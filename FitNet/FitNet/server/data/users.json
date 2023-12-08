@@ -1,0 +1,95 @@
+{
+  "users": [
+    {
+      "role": "admin",
+      "id": 1,
+      "firstName": "Terry",
+      "lastName": "Medhurst",
+      "image": "https://robohash.org/hicveldicta.png",
+      "gender": "male",
+      "age": 50,
+      "email": "atuny0@sohu.com",
+      "password": "9uQFF1Lh",
+      "birthDate": "2000-12-25",
+      "weight": 75.4
+    },
+    {
+      "role": "user",
+      "id": 2,
+      "firstName": "Sheldon",
+      "lastName": "Quigley",
+      "image": "https://robohash.org/doloremquesintcorrupti.png",
+      "gender": "male",
+      "age": 28,
+      "email": "hbingley1@plala.or.jp",
+      "password": "CQutx25i8r",
+      "birthDate": "2003-08-02",
+      "weight": 74
+    },
+    {
+      "role": "admin",
+      "id": 3,
+      "firstName": "Terrill",
+      "lastName": "Hills",
+      "image": "https://robohash.org/consequunturautconsequatur.png",
+      "gender": "male",
+      "age": 38,
+      "email": "rshawe2@51.la",
+      "password": "OWsTbMUgFc",
+      "birthDate": "1992-12-30",
+      "weight": 105.3
+    },
+    {
+      "role": "user",
+      "id": 4,
+      "firstName": "Miles",
+      "lastName": "Cummerata",
+      "image": "https://robohash.org/facilisdignissimosdolore.png",
+      "gender": "male",
+      "age": 49,
+      "email": "yraigatt3@nature.com",
+      "password": "sRQxjPfdS",
+      "birthDate": "1969-01-16",
+      "weight": 95.9
+    },
+    {
+      "role": "admin",
+      "id": 5,
+      "firstName": "Mavis",
+      "lastName": "Schultz",
+      "image": "https://robohash.org/laboriosamfacilisrem.png",
+      "gender": "male",
+      "age": 38,
+      "email": "kmeus4@upenn.edu",
+      "password": "aUTdmmmbH",
+      "birthDate": "1968-11-03",
+      "weight": 105.7
+    },
+    {
+      "role": "user",
+      "id": 6,
+      "firstName": "Alison",
+      "lastName": "Reichert",
+      "image": "https://robohash.org/cupiditatererumquos.png",
+      "gender": "female",
+      "age": 21,
+      "email": "jtreleven5@nhs.uk",
+      "password": "zY1nE46Zm",
+      "birthDate": "1969-07-21",
+      "weight": 78.1
+    },
+    {
+      "role": "admin",
+      "id": 7,
+      "firstName": "Oleta",
+      "lastName": "Abbott",
+      "image": "https://robohash.org/adverovelit.png",
+      "gender": "female",
+      "age": 31,
+      "email": "dpettegre6@columbia.edu",
+      "password": "YVmhktgYVS",
+      "birthDate": "1982-02-21",
+      "weight": 105.7
+    }
+  ]
+}

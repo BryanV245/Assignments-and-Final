@@ -6,7 +6,7 @@ import { getSession } from '../model/session';
 
 
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.url),
   routes: [
     {
       path: "/",

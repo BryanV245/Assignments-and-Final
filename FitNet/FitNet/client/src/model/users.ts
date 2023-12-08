@@ -1,5 +1,6 @@
 
 import data from "../data/users.json";
+import * as myFetch from "./myFetch";
 
 export interface User {
   id: number,
@@ -14,6 +15,16 @@ export interface User {
   weight?: number,
   weeklyCaloriesBurned?: number
 }
+
+export const defaultUser: User = {
+  id: 0,
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  role: 'user',
+};
+
 
 export let usersArray = getUsersWithCalories();
 

@@ -1,31 +1,16 @@
-const { MongoClient } = require('mongodb');
-require('dotenv').config();
-console.log('DB URI:', process.env.DB_URI);
 
+const { MongoClient, ObjectId } = require('mongodb');
+const uri = process.env.MONGO_URI;
+const DB_NAME = process.env.MONGO_DB_NAME;
 
-const dbUri = process.env.DB_URI;
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {});
 
-let db;
+async function connect() {
+    await client.connect();
+    return client.db(DB_NAME);
+}
 
-const connectToMongoDB = async () => {
-    try {
-        const client = new MongoClient(dbUri);
-        await client.connect();
-        db = client.db();
-        console.log("Connected to MongoDB");
-    } catch (error) {
-        console.error("Could not connect to MongoDB:", error);
-        process.exit(1);
-    }
+module.exports = { 
+  connect, ObjectId
 };
-
-const getDb = () => {
-    if (!db) {
-        throw new Error('DB not initialized');
-    }
-    return db;
-};
-const client = new MongoClient(dbUri);
-
-
-module.exports = { connectToMongoDB, getDb };

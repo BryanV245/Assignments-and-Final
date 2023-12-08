@@ -1,38 +1,45 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { getSession } from '@/model/session';
+import { ref } from "vue";
+import { getSession, useLogin } from "@/model/session";
+import  { type User, defaultUser } from "@/model/users";
 
-interface User {
-  email: string;
-  password: string;
-}
 
-const email = ref('');
-const password = ref('');
-const users: User[] = [];
+
+const session = getSession();
+const { login, logout, register } = useLogin();
 
 const doLogin = () => {
-
+  login(email.value, password.value);
 };
 
+const email = ref("atuny0@sohu.com");
+const password = ref("9uQFF1Lh");
+
 const doSignUp = () => {
-  users.push({ email: email.value, password: password.value });
+  const user: User = {
+    ...defaultUser,
+    email: email.value,
+    password: password.value,
+  };
+  register(user);
 
-
-  email.value = '';
-  password.value = '';
+  email.value = "";
+  password.value = "";
 };
 </script>
 
 <template>
-  
-
   <div class="hero-body">
     <div class="column is-half is-offset-one-quarter">
       <div class="box">
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input v-model="email" class="input" type="email" placeholder="Email" />
+            <input
+              v-model="email"
+              class="input"
+              type="email"
+              placeholder="Email"
+            />
             <span class="icon is-small is-left">
               <i class="fas fa-envelope"></i>
             </span>
@@ -43,7 +50,12 @@ const doSignUp = () => {
         </div>
         <div class="field">
           <p class="control has-icons-left">
-            <input v-model="password" class="input" type="password" placeholder="Password" />
+            <input
+              v-model="password"
+              class="input"
+              type="password"
+              placeholder="Password"
+            />
             <span class="icon is-small is-left">
               <i class="fas fa-lock"></i>
             </span>
@@ -62,5 +74,4 @@ const doSignUp = () => {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -80,6 +80,7 @@ const doLogout = () => {
           Log in
         </a>
       </div>
+      <!--
       <div class="dropdown-menu" role="menu">
         <div class="dropdown-content">
           <a 
@@ -92,7 +93,7 @@ const doLogout = () => {
             {{ user.email }}
           </a>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
