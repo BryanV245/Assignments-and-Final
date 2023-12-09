@@ -28,7 +28,7 @@ app
   })
 
   .use("/api/v1/users", users)
-  //.use('/api/v1/workouts', workouts)
+  .use('/api/v1/workouts', workouts)
 
   .get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../client/dist/index.html"));

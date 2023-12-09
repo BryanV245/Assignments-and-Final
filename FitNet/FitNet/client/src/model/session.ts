@@ -1,7 +1,7 @@
 
 import { reactive } from "vue";
 import { useRouter } from "vue-router"
-import { type User, getUserByEmail } from "./users";
+import { type User } from "./users";
 import * as myFetch from "./myFetch";
 
 const session = reactive({
@@ -53,4 +53,3 @@ export function useLogin(){
     }
   }
 }
-

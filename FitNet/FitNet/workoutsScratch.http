@@ -1,0 +1,29 @@
+
+# Environment Base URL
+@baseUrl = http://localhost:3000
+
+###
+# POST request to add a new exercise
+POST {{baseUrl}}/api/v1/workouts/add
+Content-Type: application/json
+
+{
+  "userId": "123456",
+  "excersiseId": "1",
+  "name": "Running",
+  "duration": "30 minutes",
+  "calories": 300,
+  "date": "2023-12-08"
+}
+
+###
+# GET request to retrieve exercises for a specific user
+GET {{baseUrl}}/api/v1/workouts/user/123456
+
+###
+# DELETE request to delete an exercise (replace <exerciseId> with actual ID)
+DELETE {{baseUrl}}/api/v1/workouts/delete/exercise/6573afb6d26dd3cc116efba3
+
+### 
+DELETE {{baseUrl}}/api/v1/workouts/deleteAll/user/123456
+

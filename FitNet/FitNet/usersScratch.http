@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:3000
+
+
+###
+GET {{baseUrl}}/api/v1/users/
+
+### 
+GET {{baseUrl}}/api/v1/users/6573c21a68a6b51cda2fcdc1
+
+###
+POST {{baseUrl}}/api/v1/users/addUser
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@Doe", 
+    "password": "123456",
+    "id": "69",
+    "age": "70",
+    "weight": "80",
+    "gender": "male",
+    "role": "user"
+}
+
+###
+PUT {{baseUrl}}/api/v1/users/update/6573c21a68a6b51cda2fcdc1
+Content-Type: application/json
+{
+    "firstName": "Jonathan",
+    "lastName": "herm",
+    "email": "jonathan@herm.com", 
+    "password": "1234567",
+    "id": "69",
+    "age": "90",
+    "weight": "100",
+    "gender": "female",
+    "role": "user"
+}
+
+###
+DELETE  {{baseUrl}}/api/v1/users/delete/6573c21a68a6b51cda2fcdc1

@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { getSession, useLogin } from "@/model/session";
-import  { type User, defaultUser } from "@/model/users";
-
-
+import { type User, defaultUser } from "@/model/users";
 
 const session = getSession();
 const { login, logout, register } = useLogin();
