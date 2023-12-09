@@ -3,13 +3,16 @@
 @baseUrl = http://localhost:3000
 
 ###
+POST {{baseUrl}}/api/v1/workouts/
+
+###
 # POST request to add a new exercise
 POST {{baseUrl}}/api/v1/workouts/add
 Content-Type: application/json
 
 {
   "userId": "123456",
-  "excersiseId": "1",
+  "workoutId": "4",
   "name": "Running",
   "duration": "30 minutes",
   "calories": 300,
@@ -22,8 +25,10 @@ GET {{baseUrl}}/api/v1/workouts/user/123456
 
 ###
 # DELETE request to delete an exercise (replace <exerciseId> with actual ID)
-DELETE {{baseUrl}}/api/v1/workouts/delete/exercise/6573afb6d26dd3cc116efba3
+DELETE {{baseUrl}}/api/v1/workouts/delete/workout/6574b2e90ee70f9742db6d0a
 
 ### 
 DELETE {{baseUrl}}/api/v1/workouts/deleteAll/user/123456
+
+
 

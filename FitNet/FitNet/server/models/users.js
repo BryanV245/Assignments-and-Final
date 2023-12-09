@@ -19,7 +19,6 @@ const jwt = require('jsonwebtoken');
  */
 
 /**
-
  * @param {string} id 
  * @param {Object} updates - Object containing the fields to be updated.
  */
@@ -58,7 +57,7 @@ async function getCollection() {
 async function getAll() {
   const col = await getCollection();
   return col.find({}).toArray();
-}
+} 
 
 /**
  * @param {string} id
@@ -80,8 +79,6 @@ async function deleteUser(id) {
   const result = await col.deleteOne({ _id: new ObjectId(id) });
   return result;
 }
-
-
 
 async function seed() {
   const col = await getCollection();

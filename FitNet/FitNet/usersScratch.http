@@ -39,4 +39,8 @@ Content-Type: application/json
 }
 
 ###
-DELETE  {{baseUrl}}/api/v1/users/delete/6573c21a68a6b51cda2fcdc1
+DELETE  {{baseUrl}}/api/v1/users/delete/6573d14d5eccd922362e1192
+
+
+###
+POST {{baseUrl}}/api/v1/users/seed
