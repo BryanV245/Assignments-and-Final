@@ -30,6 +30,14 @@ GET {{baseUrl}}/api/v1/workouts/user/1
 ###
 GET {{baseUrl}}/api/v1/workouts/
 
+###
+PUT {{baseUrl}}/api/v1/workouts/update/workout/657544eddb6d17b8d436666f
+Content-Type: application/json
+
+{
+  "complete": false
+}
+
 
 ###
 # DELETE request to delete an exercise (replace <exerciseId> with actual ID)

@@ -6,6 +6,7 @@ const {
   deleteWorkout,
   deleteAll,
   getAll,
+  updateWorkout
 } = require("../models/workouts");
 
 router
@@ -57,6 +58,38 @@ router
         res.send(result);
       })
       .catch(next);
+  })
+  
+  .put("/update/workout/:workoutId", async (req, res) => {
+    try {
+      const workoutId = req.params.workoutId; // Get the workout ID from the URL
+      const updates = req.body; // Get the updates from the request body
+  
+      // Call the updateWorkout function
+      const result = await updateWorkout(workoutId, updates);
+  
+      if (result.modifiedCount === 0) {
+        res.status(404).json({
+          data: null,
+          isSuccess: false,
+          message: "No workout found with the provided ID, or no changes were made."
+        });
+      } else {
+        res.status(200).json({
+          data: result, // Optionally include the updated workout data
+          isSuccess: true,
+          message: "Workout updated successfully"
+        });
+      }
+    } catch (error) {
+      console.error("Error updating workout:", error);
+      res.status(500).json({
+        data: null,
+        isSuccess: false,
+        message: "Internal Server Error"
+      });
+    }
   });
+  
 
 module.exports = router;

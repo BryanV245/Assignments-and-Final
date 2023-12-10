@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import LoginView from '../views/LoginView.vue'
+import Lifetime from '../views/Lifetime.vue'
 import { getSession } from '../model/session';
 
 
@@ -38,6 +39,12 @@ const router = createRouter({
       component: () => import("../views/PlanView.vue"),
       beforeEnter: requireLogin,
     },
+    {
+      path: "/Lifetime",
+      name: "Lifetime",
+      component: Lifetime,
+      beforeEnter: requireLogin,
+    }
   ],
 });
 

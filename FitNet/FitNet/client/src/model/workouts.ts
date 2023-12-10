@@ -1,4 +1,4 @@
-import { api } from "./session";
+import { api,api2 } from "./session";
 
 export interface Workout {
   _id?: string;
@@ -8,6 +8,7 @@ export interface Workout {
   calories: number;
   date: string;
   workoutId: string;
+  complete?: boolean;
 };
 
 export const defaultWorkout: Workout = {
@@ -18,7 +19,9 @@ export const defaultWorkout: Workout = {
   calories: 0,
   date: '',
   workoutId: '',
+  complete: false,
 };
+
 export async function addWorkout(workout: Workout): Promise<Workout[]> {
   return api("/workouts/add", workout);
 }
@@ -36,4 +39,8 @@ export async function deleteWorkout(id: string): Promise<void> {
 
 export async function deleteAllWorkouts(id: number): Promise<void> {
     return api(`/workouts/deleteAll/user/${id}`, undefined, "DELETE");
+}
+
+export async function updateWorkout(workout: Workout): Promise<Workout[]> {
+  return api2(`/workouts/update/workout/${workout._id}`, workout, "PUT");
 }

@@ -8,6 +8,7 @@ const { ObjectId, connect } = require("./mongo");
  * @property {number} workout.calories - Calories burned.
  * @property {string} workout.date - Date of the workout.
  * @property {string} workoutId - The ID of the workout to delete.
+ * @property {boolean} workout.completed - Whether the workout is completed.
  */
 
 const WORKOUT_COLLECTION = "Workouts";
@@ -60,6 +61,26 @@ async function deleteAll(userId) {
   return col.deleteMany({ userId: numericUserId });
 }
 
+async function updateWorkout(id, updates) {
+  const col = await getWorkoutCollection();
+
+  // Fields that should not be updated
+  const forbiddenUpdates = ['_id', 'userId', 'workoutId'];
+  // Remove forbidden fields from updates
+  forbiddenUpdates.forEach(field => {
+    if (updates.hasOwnProperty(field)) {
+      delete updates[field];
+    }
+  });
+  // Perform the update
+  console.log("Updating workout:", id, updates);
+  const result = await col.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: updates }
+  );
+  return result;
+}
+
 
 module.exports = {
   deleteWorkout,
@@ -68,5 +89,6 @@ module.exports = {
   getWorkoutsById,
   deleteAll,
   getWorkoutCollection,
-  getAll
+  getAll,
+  updateWorkout,
 };

@@ -33,6 +33,7 @@ const isActive = ref(false);
         <RouterLink class="navbar-item" to="/Social">Social</RouterLink>
         <RouterLink class="navbar-item" to="/Plan">Plan</RouterLink>
         <RouterLink class="navbar-item" to="/MyProfile">My Profile</RouterLink>
+        <RouterLink class="navbar-item" to="/Lifetime">Lifetime</RouterLink>
         <RouterLink v-if="userRole === 'admin'" class="navbar-item" to="/Admin">Admin</RouterLink>
       </div>
 
