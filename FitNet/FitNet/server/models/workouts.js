@@ -1,57 +1,65 @@
 const { ObjectId, connect } = require("./mongo");
 
-const WORKOUT_COLLECTION = "Workouts";
+/**
+ * @typedef {Object} workout - The workout data.
+ * @property {number} workout.userId - The ID of the user who did the workout.
+ * @property {string} workout.name - The name of the workout.
+ * @property {string} workout.duration - Duration of the workout.
+ * @property {number} workout.calories - Calories burned.
+ * @property {string} workout.date - Date of the workout.
+ * @property {string} workoutId - The ID of the workout to delete.
+ */
 
+const WORKOUT_COLLECTION = "Workouts";
 async function getWorkoutCollection() {
   const db = await connect();
   return db.collection(WORKOUT_COLLECTION);
 }
 
-/**
- * @param {Object} workout - The workout data.
- * @param {number} workout.userId - The ID of the user who did the workout.
- * @param {string} workout.name - The name of the workout.
- * @param {string} workout.duration - Duration of the workout.
- * @param {number} workout.calories - Calories burned.
- * @param {string} workout.date - Date of the workout.
- * @param {string} workoutId - The ID of the workout to delete.
- */
+async function getAll() {
+  const col = await getWorkoutCollection();
+  return col.find({}).toArray();
+}
+
 async function addWorkout(workout) {
   const col = await getWorkoutCollection();
   const result = await col.insertOne(workout);
   return result;
 }
 
-/**
- * @param {number} userId - The user's ID.
- */
 async function getWorkoutsByUser(userId) {
-  console.log("UserId:", userId); // Debugging log
+  const numericUserId = Number(userId);
+  if (isNaN(numericUserId)) {
+    console.error("Invalid userId:", userId);
+    throw new Error("Invalid userId");
+  }
   const col = await getWorkoutCollection();
-  return col.find({ userId: userId }).toArray();
+  return col.find({ userId: numericUserId }).toArray();
 }
 
-/**
- * @param {string} workoutId - The Workout's ID.
- * @param {number} userId - The user's ID.
- */
+
 async function getWorkoutsById(workoutId) {
-  console.log("workoutId:", workoutId); // Debugging log
+  console.log("deleting workout:", workoutId); // Debugging log
   const col = await getWorkoutCollection();
   return col.find({ workoutId: workoutId }).toArray();
 }
 
 async function deleteWorkout(workoutId) {
-  console.log("WorkoutId:", workoutId); // Debugging log
+  console.log("deleting WorkoutId:", workoutId); // Debugging log
   const col = await getWorkoutCollection();
   return col.deleteOne({ _id: new ObjectId(workoutId) });
 }
 
 async function deleteAll(userId) {
-  console.log("userId:", userId); // Debugging log
+  const numericUserId = Number(userId);
+  if (isNaN(numericUserId)) {
+    console.error("Invalid userId:", userId);
+    throw new Error("Invalid userId");
+  }
   const col = await getWorkoutCollection();
-  return col.deleteMany({ userId: userId });
+  return col.deleteMany({ userId: numericUserId });
 }
+
 
 module.exports = {
   deleteWorkout,
@@ -59,4 +67,6 @@ module.exports = {
   getWorkoutsByUser,
   getWorkoutsById,
   deleteAll,
+  getWorkoutCollection,
+  getAll
 };

@@ -6,8 +6,8 @@ const {
   generateJWT,
   verifyJWT,
   get,
-  updateUser, 
-  deleteUser
+  updateUser,
+  deleteUser,
 } = require("../models/users");
 const router = express.Router();
 
@@ -28,7 +28,7 @@ router
   })
 
   // Corrected Route to update a user
-  .put('/update/:id', async (req, res) => {
+  .put("/update/:id", async (req, res) => {
     try {
       const id = req.params.id; // Get the user ID from the URL
       const updates = req.body; // Get the updates from the request body
@@ -37,13 +37,15 @@ router
       const result = await updateUser(id, updates);
 
       if (result.modifiedCount === 0) {
-        return res.status(404).send('No user found with the provided ID, or no changes were made.');
+        return res
+          .status(404)
+          .send("No user found with the provided ID, or no changes were made.");
       }
 
-      res.status(200).send('User updated successfully');
+      res.status(200).send("User updated successfully");
     } catch (error) {
-      console.error('Error updating user:', error);
-      res.status(500).send('Internal Server Error');
+      console.error("Error updating user:", error);
+      res.status(500).send("Internal Server Error");
     }
   })
 

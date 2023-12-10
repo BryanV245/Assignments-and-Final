@@ -1,57 +1,76 @@
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { getSession } from "@/model/session";
+import { type Workout, getWorkouts, addWorkout, deleteWorkout } from '@/model/workouts';
 
 const user = getSession().user;
+const userID = user?.id;
 
-
-//sets user data
-const exerciseName = ref('');
-const exerciseDuration = ref('');
-const exerciseCalories = ref('');
-const exerciseDate = ref('');  
+const workoutName = ref('');
+const workoutDuration = ref('');
+const workoutCalories = ref('');
+const workoutDate = ref('');  
+const workoutId = ref('');
 const showModal = ref(false);
+const customWorkouts = ref([] as Workout[])
 
-//shows defoult woukouts
-const defaultWorkouts = [
-  { name: "Running", duration: "30 minutes", calories: "300" }
-];
+const loadWorkouts = async () => {
+  if (userID) {
+    try {
+      const data = await getWorkouts(userID);
+      console.log("Workouts:", data); //debugging
+      customWorkouts.value = data; // Adjust according to the data structure returned by your API
+    } catch (error) {
+      console.error('Error fetching workouts:', error);
+    }
+  }
+};
 
-//woukout array
-const customWorkouts = ref<string[]>([]);
+const handleAddWorkout = async () => {
+  if (!userID) {
+    console.error('User ID is missing');
+    return;
+  }
 
-//gets user data
-const currentUser = getSession().user; 
-const userID = ref(currentUser?.id? currentUser.id : 'default');
-const userWorkoutKey = `customWorkouts_${userID.value}`;
+  const newWorkout = {
+    userId: userID,
+    name: workoutName.value,
+    workoutId: workoutId.value,
+    duration: workoutDuration.value,
+    calories: parseInt(workoutCalories.value),
+    date: workoutDate.value
+  };
 
+  try {
+    await addWorkout(newWorkout);
+    await loadWorkouts();
+  } catch (error) {
+    console.error('Error adding workout:', error);
+  }
 
-onMounted(() => {
-  const storedWorkouts = JSON.parse(localStorage.getItem(userWorkoutKey) || '[]');
-  customWorkouts.value = storedWorkouts;
-});
+  resetForm();
+};
 
+const handleDeleteWorkout = async (workoutId: string) => {
+  try {
+    await deleteWorkout(workoutId);
+    await loadWorkouts();
+  } catch (error) {
+    console.error('Error deleting workout:', error);
+  }
+};
 
-//adds excersise to array
-const addExercise = () => {
-  customWorkouts.value.push(`${exerciseDate.value} - ${exerciseName.value} - ${exerciseDuration.value} - ${exerciseCalories.value} calories`);
-  localStorage.setItem(userWorkoutKey, JSON.stringify(customWorkouts.value));
-  exerciseName.value = '';
-  exerciseDuration.value = '';
-  exerciseCalories.value = '';
-  exerciseDate.value = '';  
+const resetForm = () => {
+  workoutName.value = '';
+  workoutDuration.value = '';
+  workoutCalories.value = '';
+  workoutDate.value = '';  
   showModal.value = false;
 };
 
-
-//delete exercise
-const deleteExercise = (index: number) => {
-  customWorkouts.value.splice(index, 1);
-  localStorage.setItem(userWorkoutKey, JSON.stringify(customWorkouts.value));
-};
+onMounted(loadWorkouts);
 </script>
-
-
 
 
 <template>
@@ -59,20 +78,15 @@ const deleteExercise = (index: number) => {
     <h1>Workout Planner</h1>
 
     <ul class="workout-list">
-      <li v-for="workout in defaultWorkouts" :key="workout.name">
+      <li v-for="workout in customWorkouts" :key="workout._id">
         {{ workout.name }} - {{ workout.duration }} - {{ workout.calories }} calories
-      </li>
-      <li v-for="(workout, index) in customWorkouts" :key="workout">
-        {{ workout }}
-        
-        <button class="delete-button" @click="deleteExercise(index)">Delete</button>
+        <button class="delete-button" @click="() => handleDeleteWorkout(workout._id as string)">Delete</button>
       </li>
     </ul>
 
     <div class="add-workout">
       <button class="button is-link" @click="showModal = true">Add Workout</button>
     </div>
-
 
     <div class="modal" :class="{ 'is-active': showModal }">
       <div class="modal-background" @click="showModal = false"></div>
@@ -82,40 +96,49 @@ const deleteExercise = (index: number) => {
           <button class="delete" aria-label="close" @click="showModal = false"></button>
         </header>
         <section class="modal-card-body">
+          <!-- Form inputs -->
           <div class="field">
-            <label class="label">Exercise</label>
+            <label class="label">Workout</label>
             <div class="control">
-              <input v-model="exerciseName" type="text" class="input" placeholder="Enter exercise name" required>
+              <input v-model="workoutName" type="text" class="input" placeholder="Enter workout name" required>
             </div>
           </div>
           <div class="field">
             <label class="label">Duration</label>
             <div class="control">
-              <input v-model="exerciseDuration" type="text" class="input" placeholder="E.g., 30 minutes" required>
+              <input v-model="workoutDuration" type="text" class="input" placeholder="E.g., 30 minutes" required>
             </div>
           </div>
           <div class="field">
             <label class="label">Calories Burned</label>
             <div class="control">
-              <input v-model="exerciseCalories" type="text" class="input" placeholder="E.g., 300" required>
+              <input v-model="workoutCalories" type="text" class="input" placeholder="E.g., 300" required>
             </div>
           </div>
-
           <div class="field">
             <label class="label">Date</label>
             <div class="control">
-              <input v-model="exerciseDate" type="date" class="input" required>
+              <input v-model="workoutDate" type="date" class="input" required>
             </div>
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button class="button is-success" @click="addExercise">Save changes</button>
+          <button class="button is-success" @click="handleAddWorkout">Save changes</button>
           <button class="button" @click="showModal = false">Cancel</button>
         </footer>
       </div>
     </div>
   </div>
 </template>
+
+
+
+
+
+
+
+
+
 <style scoped>
 body, html {
   background-color: #444;
@@ -208,3 +231,4 @@ h1 {
 }
 
 </style>
+
