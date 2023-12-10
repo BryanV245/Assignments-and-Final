@@ -1,3 +1,6 @@
+
+
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { getSession } from "@/model/session";
@@ -120,6 +123,22 @@ const dayClass = (day: number): string => {
   return ""; // No additional style for days without workouts
 };
 
+
+const getWorkoutDetails = (day: number) => {
+  return customWorkouts.value.filter((workout) => {
+    const workoutDateObj = new Date(workout.date);
+    //console.log(workout);
+    return (
+      day === workoutDateObj.getDate() &&
+      currentMonth.value === workoutDateObj.getMonth() &&
+      currentYear.value === workoutDateObj.getFullYear()
+    );
+  });
+
+};
+
+// Add a ref for tracking the hovered day
+const hoveredDay = ref<number | null>(null);
 onMounted(loadWorkouts);
 </script>
 
@@ -131,6 +150,11 @@ onMounted(loadWorkouts);
       <span>{{ currentMonthName }} {{ currentYear }}</span>
       <button @click="changeMonth(1)">Next →</button>
     </div>
+    <div v-if="hoveredDay" class="workout-details">
+      <div v-for="workout in getWorkoutDetails(hoveredDay)" :key="workout._id">
+        <p>{{ workout.name }} - {{ workout.duration }} - {{ workout.calories }} calories</p>
+      </div>
+    </div>
 
     <!-- Calendar Grid: Displaying Days of the Month -->
     <div class="calendar-grid">
@@ -140,6 +164,8 @@ onMounted(loadWorkouts);
         class="calendar-day"
         :class="dayClass(day)"
         @click="selectDay(day)"
+        @mouseover="hoveredDay = day"
+        @mouseout="hoveredDay = null"
       >
         {{ day }}
         <!-- Optional: Displaying Additional Info on Each Day -->
@@ -224,5 +250,16 @@ onMounted(loadWorkouts);
 
 .button:hover {
   background-color: #305d6e; /* Darker shade on hover */
+}
+
+.workout-details {
+  position: absolute;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* Ensure it appears above other elements */
 }
 </style>
