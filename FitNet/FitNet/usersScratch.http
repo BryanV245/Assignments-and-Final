@@ -14,13 +14,22 @@ Content-Type: application/json
 {
     "firstName": "John",
     "lastName": "Doe",
-    "email": "john@Doe", 
-    "password": "123456",
+    "email": "john@Doe12345913", 
+    "password": "1234567891234",
     "id": "69",
     "age": "70",
     "weight": "80",
     "gender": "male",
     "role": "user"
+}
+
+###
+POST {{baseUrl}}/api/v1/users/login
+Content-Type: application/json
+
+{
+    "email": "john@Doe12345913", 
+    "password": "1234567891234"
 }
 
 ###

@@ -1,8 +1,9 @@
-
 import { reactive } from "vue";
-import { useRouter } from "vue-router"
+import { useRouter } from "vue-router";
 import { type User } from "./users";
 import * as myFetch from "./myFetch";
+
+
 
 const session = reactive({
   user: null as User | null,
@@ -27,7 +28,6 @@ export function api2(action: string, body?: unknown, method?: string){
   return myFetch.apiPut(`${action}`, body, method)
     .catch(err=> showError(err))
 }
-
 
 export function useLogin(){
   const router = useRouter();

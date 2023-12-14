@@ -15,6 +15,7 @@ export interface User {
   weight?: number;
   weeklyCaloriesBurned?: number;
   lifetimeCaloriesBurned?: number;
+  caloriesGoal?: number;
 }
 
 export const defaultUser: User = {
@@ -40,7 +41,7 @@ export async function addUser(user: User): Promise<User[]> {
 
 // Function to update a user
 export async function updateUser(user: User): Promise<User[]> {
-  return api(`/users/update/${user._id}`); // Explicitly specifying the PUT method
+  return api(`/users/update/user/${user._id}`, user, "PUT"); // Explicitly specifying the PUT method
 }
 
 // Function to delete a user by ID
@@ -48,8 +49,7 @@ export async function deleteUser(id: string): Promise<void> {
   return api(`/users/delete/${id}`, undefined, 'DELETE'); 
 }
 
-//  calculate local calories burned (kept for legacy support) might not use this
-export function getLocalCaloriesBurned(email: string, id: number): number {
-  const weeklyCaloriesBurnedKey = `weeklyCaloriesBurned_${id}`;
-  return parseInt(localStorage.getItem(weeklyCaloriesBurnedKey) || '0', 10);
+
+export async function  setWeeklyCaloriesBurned(user: User, weeklyCaloriesBurned: number): Promise<void> {
+    await updateUser({...user, weeklyCaloriesBurned: weeklyCaloriesBurned});
 }

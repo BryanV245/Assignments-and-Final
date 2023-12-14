@@ -6,12 +6,9 @@ import { ref, computed, onMounted } from "vue";
 import { getSession } from "@/model/session";
 import {
   getWorkouts,
-  addWorkout,
-  deleteWorkout,
   type Workout,
 } from "@/model/workouts";
 
-// Assuming getSession().user has a defined TypeScript type
 const user = getSession().user;
 const userID = user?.id;
 
@@ -22,19 +19,8 @@ const workoutDate = ref<string>("");
 const workoutId = ref<string>("");
 const workoutCompleted = ref<boolean>(false);
 const showModal = ref<boolean>(false);
+const hoveredDay = ref<number | null>(null);
 const customWorkouts = ref<Workout[]>([]);
-
-const loadWorkouts = async () => {
-  if (userID) {
-    try {
-      const data = await getWorkouts(userID);
-      console.log("Workouts:", data);
-      customWorkouts.value = data;
-    } catch (error) {
-      console.error("Error fetching workouts:", error);
-    }
-  }
-};
 
 const currentMonth = ref<number>(new Date().getMonth());
 const currentYear = ref<number>(new Date().getFullYear());
@@ -69,6 +55,19 @@ const currentMonthName = computed<string>(() => {
   ];
   return months[currentMonth.value];
 });
+
+const loadWorkouts = async () => {
+  if (userID) {
+    try {
+      const data = await getWorkouts(userID);
+      console.log("Workouts:", data);
+      customWorkouts.value = data;
+    } catch (error) {
+      console.error("Error fetching workouts:", error);
+    }
+  }
+};
+
 
 const changeMonth = (delta: number): void => {
   let newMonth = currentMonth.value + delta;
@@ -120,14 +119,13 @@ const dayClass = (day: number): string => {
     return "workout-incomplete"; // Style for incomplete workouts
   }
 
-  return ""; // No additional style for days without workouts
+  return ""; 
 };
 
 
 const getWorkoutDetails = (day: number) => {
   return customWorkouts.value.filter((workout) => {
     const workoutDateObj = new Date(workout.date);
-    //console.log(workout);
     return (
       day === workoutDateObj.getDate() &&
       currentMonth.value === workoutDateObj.getMonth() &&
@@ -137,8 +135,8 @@ const getWorkoutDetails = (day: number) => {
 
 };
 
-// Add a ref for tracking the hovered day
-const hoveredDay = ref<number | null>(null);
+
+
 onMounted(loadWorkouts);
 </script>
 
@@ -156,7 +154,7 @@ onMounted(loadWorkouts);
       </div>
     </div>
 
-    <!-- Calendar Grid: Displaying Days of the Month -->
+
     <div class="calendar-grid">
       <div
         v-for="(day, index) in daysInMonth"
@@ -168,7 +166,7 @@ onMounted(loadWorkouts);
         @mouseout="hoveredDay = null"
       >
         {{ day }}
-        <!-- Optional: Displaying Additional Info on Each Day -->
+
         <span v-if="isWorkoutComplete(day) === true">✓</span>
         <span v-else-if="isWorkoutComplete(day) === false">✗</span>
       </div>
@@ -177,7 +175,7 @@ onMounted(loadWorkouts);
 </template>
 <style scoped>
 .calendar-container {
-  max-width: 600px; /* Increase the maximum width */
+  max-width: 800px; /* Increase the maximum width */
   margin: 2rem auto;
   background-color: #444;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -193,22 +191,22 @@ onMounted(loadWorkouts);
   padding: 20px; /* Increase padding for larger header */
   background-color: #305d6e;
   font-weight: bold;
-  font-size: 1.2em; /* Increase font size for better visibility */
+  font-size: 1.4em; /* Increase font size for better visibility */
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 10px;
 }
 
 .calendar-day {
-  padding: 20px; /* Increase padding for larger day cells */
+  padding: 25px; /* Increase padding for larger day cells */
   background-color: #666;
   transition: background-color 0.3s ease;
   position: relative;
   cursor: pointer;
-  font-size: 1.1em; /* Increase font size inside day cells */
+  font-size: 1.2em; /* Increase font size inside day cells */
 }
 
 .calendar-day:hover {

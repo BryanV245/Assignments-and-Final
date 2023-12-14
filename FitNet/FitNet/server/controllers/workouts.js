@@ -6,7 +6,8 @@ const {
   deleteWorkout,
   deleteAll,
   getAll,
-  updateWorkout
+  updateWorkout,
+  getWeeklyWorkouts
 } = require("../models/workouts");
 
 router
@@ -89,7 +90,15 @@ router
         message: "Internal Server Error"
       });
     }
-  });
+  })
+  .get("/user/weekly/:userId", (req, res, next) => {
+    const userId = req.params.userId;
+    getWeeklyWorkouts(userId)
+      .then((workouts) => {
+        res.send(workouts);
+      })
+      .catch(next);
+  })
   
 
 module.exports = router;

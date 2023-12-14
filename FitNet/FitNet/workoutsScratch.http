@@ -46,5 +46,7 @@ DELETE {{baseUrl}}/api/v1/workouts/delete/workout/6574b2e90ee70f9742db6d0a
 ### 
 DELETE {{baseUrl}}/api/v1/workouts/deleteAll/user/123456
 
+###
+GET {{baseUrl}}/api/v1/workouts/user/weekly/1
 
-
+POST {{baseUrl}}/api/v1/workouts/add

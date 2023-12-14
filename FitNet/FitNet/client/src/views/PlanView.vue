@@ -33,11 +33,20 @@ const loadWorkouts = async () => {
   }
 };
 
+const getDayOfWeek = (dateStr: string): string => {
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const date = new Date(dateStr);
+  return days[date.getUTCDay()];
+};
+
+
 const handleAddWorkout = async () => {
   if (!userID) {
     console.error("User ID is missing");
     return;
   }
+
+  const dayOfWeek = getDayOfWeek(workoutDate.value); // Get the day of the week
 
   const newWorkout = {
     userId: userID,
@@ -47,6 +56,7 @@ const handleAddWorkout = async () => {
     calories: parseInt(workoutCalories.value),
     date: workoutDate.value,
     complete: workoutCompleted.value,
+    dayOfWeek: dayOfWeek // Save the day of the week
   };
 
   try {
@@ -68,16 +78,6 @@ const handleDeleteWorkout = async (workoutId: string) => {
   }
 };
 
-// const toggleWorkoutStatus = async (workout: Workout) => {
-//   try {
-//     // Update the workout with the new completion status
-//     await updateWorkout({ ...workout, complete: !workout.complete });
-//     // Reload the workouts to reflect the change
-//     await loadWorkouts();
-//   } catch (error) {
-//     console.error('Error updating workout:', error);
-//   }
-// };
 
 const toggleWorkoutStatus = async (workout: Workout) => {
   try {
@@ -97,8 +97,8 @@ const resetForm = () => {
   workoutName.value = "";
   workoutDuration.value = "";
   workoutCalories.value = "";
-  workoutCompleted.value = false;
   workoutDate.value = "";
+  workoutCompleted.value = false;
   showModal.value = false;
 };
 

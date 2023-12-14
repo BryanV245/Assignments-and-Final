@@ -17,31 +17,28 @@ const jwt = require('jsonwebtoken');
  * @property {string} password - The user's password.
  * @property {string} birthDate - The user's birth date.
  * @property {number} weight - The user's weight.
+ * @property {number} calorieGoal
+ * @property {number} lifetimeCaloriesBurned
+ * @property {number} weeklyCaloriesBurned
  */
 
-/**
- * @param {string} id 
- * @param {Object} updates - Object containing the fields to be updated.
- */
 async function updateUser(id, updates) {
   const col = await getCollection();
 
   // Fields that should not be updated
-  const forbiddenUpdates = ['id', 'username', 'password'];
-
+  const forbiddenUpdates = ['_id', 'userId', 'name', 'password'];
   // Remove forbidden fields from updates
   forbiddenUpdates.forEach(field => {
     if (updates.hasOwnProperty(field)) {
       delete updates[field];
     }
   });
-
   // Perform the update
+  console.log("Updating user:", id, updates);
   const result = await col.updateOne(
     { _id: new ObjectId(id) },
     { $set: updates }
   );
-
   return result;
 }
 

@@ -1,13 +1,23 @@
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { type User, getUsers } from '@/model/users';
 
-const usersIN = ref([] as User[])
+const usersIN = ref([] as User[]);
 
-getUsers().then((data) => {
-  usersIN.value = data
-})
+
+const loadUsers = async () => {
+  try {
+    const data = await getUsers();
+    usersIN.value = data; 
+  } catch (error) {
+    console.error('Error fetching users:', error);
+  }
+};
+
+
+
+onMounted(loadUsers);
 
 </script>
 
@@ -31,6 +41,8 @@ getUsers().then((data) => {
   align-items: center;
   background-color: #333;
   box-shadow: 0 0 15px rgba(0, 127, 255, 0.6);
+  justify-content: space-between;
+
 }
 
 .user-image {

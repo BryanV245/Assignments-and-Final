@@ -10,8 +10,8 @@ const doLogin = () => {
   login(email.value, password.value);
 };
 
-const email = ref("atuny0@sohu.com");
-const password = ref("9uQFF1Lh");
+const email = ref("bryan.vasquez@live.com");
+const password = ref("1234");
 
 const doSignUp = () => {
   const user: User = {

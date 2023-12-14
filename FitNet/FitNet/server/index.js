@@ -5,6 +5,8 @@ const users = require("./controllers/users");
 const app = express();
 const workouts = require("./controllers/workouts");
 const { connect } = require("./models/mongo");
+
+
 const PORT = process.env.PORT ?? 3000;
 app
 
@@ -26,6 +28,7 @@ app
     }
     next();
   })
+
 
   .use("/api/v1/users", users)
   .use('/api/v1/workouts', workouts)
