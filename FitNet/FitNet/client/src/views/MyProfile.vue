@@ -64,10 +64,10 @@ onMounted(() => {
           <label class="label">Weight (lb)</label>
           <input class="input" type="number" v-model="weight" placeholder="Enter your weight" />
         </div>
-        <div class="field">
+        <!-- <div class="field">
           <label class="label">Weekly Calorie Goal</label>
           <input class="input" type="number" v-model="caloriesGoal" placeholder="Set your weekly calorie goal" />
-        </div>
+        </div> -->
 
       </div>
       <footer class="card-footer">

@@ -60,7 +60,6 @@ const loadWorkouts = async () => {
   if (userID) {
     try {
       const data = await getWorkouts(userID);
-      console.log("Workouts:", data);
       customWorkouts.value = data;
     } catch (error) {
       console.error("Error fetching workouts:", error);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import { getSession } from "@/model/session";
 import { useRouter } from "vue-router";
 import { type Workout, getWeeklyWorkouts } from "@/model/workouts";
@@ -14,12 +14,11 @@ const storedWorkouts = ref([] as Workout[]);
 const isModalOpen = ref(false);
 const calorieGoal = ref(0);
 const router = useRouter();
-const weeklyCaloriesBurned = ref(0);
 
 onMounted(async () => {
   if (userID) {
     calorieGoal.value = currentUser?.caloriesGoal || 0;
-    
+
     try {
       storedWorkouts.value = await getWeeklyWorkouts(userID);
       storedWorkouts.value.forEach((workout) => {
@@ -41,27 +40,27 @@ onMounted(async () => {
         }
       });
 
-      computeWeeklyCaloriesBurned();
-      setWeeklyCaloriesBurned(currentUser, weeklyCaloriesBurned.value);
+      computeWeeklyCaloriesBurned(currentUser);
+      //setWeeklyCaloriesBurned(currentUser, weeklyCaloriesBurned.value);
     } catch (error) {
       console.error("Error fetching workouts:", error);
     }
   }
 });
 
-const computeWeeklyCaloriesBurned = ()  => {
-  let i =0;
+function computeWeeklyCaloriesBurned(currentUser: User) {
+  let total = 0;
+  let i = 0;
   const index = weeklyWorkouts.findIndex((w) => w.day === todayDayName);
-  console.log(index);
-  while(i <= index) {
-    weeklyCaloriesBurned.value += weeklyWorkouts[i].caloriesBurned;
+  while (i <= index) {
+    total += weeklyWorkouts[i].caloriesBurned;
     i++;
   }
-
-  console.log(weeklyCaloriesBurned.value);
-  
-};
-
+  if (total !== currentUser.weeklyCaloriesBurned) {
+    setWeeklyCaloriesBurned(currentUser, total);
+  }
+  currentUser.weeklyCaloriesBurned = total;
+}
 
 //default workouts
 const defaultWorkouts = [
@@ -82,15 +81,17 @@ const weeklyWorkouts = [
   { day: "Saturday", caloriesBurned: 0 },
 ];
 
-
 //handler for set goal button
 const handleSetGoalClick = () => {
   isModalOpen.value = true;
 };
 
 //handler for save goal
-const saveGoal = async (user: User, calorieGoal: number) => {
-  await updateUser({ ...user, caloriesGoal: calorieGoal });
+const saveGoal = async (currentUser: User, calorieGoal: number) => {
+  if (currentUser.caloriesGoal !== calorieGoal) {
+    await updateUser({ ...currentUser, caloriesGoal: calorieGoal });
+  }
+  currentUser.caloriesGoal = calorieGoal;
   isModalOpen.value = false;
 };
 
@@ -98,6 +99,7 @@ const saveGoal = async (user: User, calorieGoal: number) => {
 const handleShareClick = () => {
   router.push("/Social");
 };
+onMounted;
 </script>
 
 <template>
@@ -106,13 +108,13 @@ const handleShareClick = () => {
       <div class="card">
         <div class="card-content">
           <p class="title">Weekly Calorie Burn Progress</p>
-          <p class="subtitle">{{ weeklyCaloriesBurned }} cal</p>
+          <p class="subtitle">{{ currentUser?.weeklyCaloriesBurned }} cal</p>
 
           <p class="title">Weekly Calorie Burn Goal</p>
           <p class="subtitle">{{ calorieGoal }} cal</p>
           <progress
             class="progress is-link"
-            :value="weeklyCaloriesBurned"
+            :value="currentUser?.weeklyCaloriesBurned"
             :max="calorieGoal"
           ></progress>
         </div>
@@ -165,7 +167,7 @@ const handleShareClick = () => {
       <div class="container">
         <h1 class="title has-text-centered">Weekly Calorie Burn Progress</h1>
         <p class="subtitle has-text-centered">
-          {{ weeklyCaloriesBurned }} cal burned since last Sunday
+          {{ currentUser?.weeklyCaloriesBurned }} cal burned since last Sunday
         </p>
         <div class="columns is-multiline">
           <div
