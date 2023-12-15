@@ -4,36 +4,39 @@ import { getSession } from "@/model/session";
 import { type User, updateUser } from "@/model/users";
 
 const user = getSession().user;
+
 const showUpdateModal = ref(false);
-const updateMessage = ref('');
-// const firstName = user.value?.firstName || '';
-// const lastName = user.value?.lastName || '';
-// const email = user.value?.email || '';
-// const age = user.value?.age || 0;
-// const weight = user.value?.weight || 0;
-//const caloriesGoal = user.value?.caloriesGoal || 0;
+const updateMessage = ref("");
+const firstName = ref(user?.firstName || "");
+const lastName = ref(user?.lastName || "");
+const email = ref(user?.email || "");
+const age = ref(user?.age || 0);
+const weight = ref(user?.weight || 0);
 
-
-  const updateProfile = async () => {
+const updateProfile = async () => {
   if (!user) {
     console.error("User is not set");
-    updateMessage.value = 'User data is not available.';
+    updateMessage.value = "User data is not available.";
     showUpdateModal.value = true;
     return;
   }
-  if (user) {
-    try {
-      await updateUser(user);
-      updateMessage.value = 'Profile updated successfully!';
-      showUpdateModal.value = true;
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      updateMessage.value = 'Failed to update profile. Please try again.';
-      showUpdateModal.value = true;
-    }
-  } else {
-    console.error("User data is not valid");
-    updateMessage.value = 'Invalid user data. Please check your input.';
+
+  const updatedUser = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    email: email.value,
+    age: age.value,
+    weight: weight.value,
+  };
+
+  try {
+    await updateUser({ ...user, ...updatedUser });
+
+    updateMessage.value = "Profile updated successfully!";
+    showUpdateModal.value = true;
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    updateMessage.value = "Failed to update profile. Please try again.";
     showUpdateModal.value = true;
   }
 };
@@ -42,8 +45,7 @@ const closeModal = () => {
   showUpdateModal.value = false;
 };
 
-onMounted(() => {
-});
+onMounted;
 </script>
 
 <template>
@@ -53,31 +55,57 @@ onMounted(() => {
         <p class="title">My Profile</p>
         <div class="field">
           <label class="label">First Name</label>
-          <input class="input" type="text" v-model="firstName" placeholder="Enter your first name" />
+          <input
+            class="input"
+            type="text"
+            v-model="firstName"
+            placeholder="Enter your first name"
+          />
         </div>
         <div class="field">
           <label class="label">Last Name</label>
-          <input class="input" type="text" v-model="user.lastName" placeholder="Enter your last name" />
+          <input
+            class="input"
+            type="text"
+            v-model="lastName"
+            placeholder="Enter your last name"
+          />
         </div>
         <div class="field">
           <label class="label">Email</label>
-          <input class="input" type="email" v-model="user.email" placeholder="Enter your email" />
+          <input
+            class="input"
+            type="email"
+            v-model="email"
+            placeholder="Enter your email"
+          />
         </div>
         <div class="field">
           <label class="label">Age</label>
-          <input class="input" type="number" v-model="user.age" placeholder="Enter your age" />
+          <input
+            class="input"
+            type="number"
+            v-model="age"
+            placeholder="Enter your age"
+          />
         </div>
         <div class="field">
           <label class="label">Weight (lb)</label>
-          <input class="input" type="number" v-model="user.weight" placeholder="Enter your weight" />
+          <input
+            class="input"
+            type="number"
+            v-model="weight"
+            placeholder="Enter your weight"
+          />
         </div>
-        
       </div>
       <footer class="card-footer">
-        <button class="button is-link" @click="updateProfile">Update Profile</button>
+        <button class="button is-link" @click="updateProfile()">
+          Update Profile
+        </button>
       </footer>
     </div>
-    
+
     <!-- Modal Popup -->
     <div v-if="showUpdateModal" class="modal" @click="closeModal">
       <div class="modal-content" @click.stop>
@@ -135,7 +163,6 @@ onMounted(() => {
 .button:hover {
   background-color: #305d6e;
 }
-
 
 .modal {
   position: fixed;
