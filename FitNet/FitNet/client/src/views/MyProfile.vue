@@ -3,20 +3,27 @@ import { ref, onMounted } from "vue";
 import { getSession } from "@/model/session";
 import { type User, updateUser } from "@/model/users";
 
-const user = ref(getSession().user);
+const user = getSession().user;
 const showUpdateModal = ref(false);
 const updateMessage = ref('');
-const firstName = user.value?.firstName || '';
-const lastName = user.value?.lastName || '';
-const email = user.value?.email || '';
-const age = user.value?.age || 0;
-const weight = user.value?.weight || 0;
-const caloriesGoal = user.value?.caloriesGoal || 0;
+// const firstName = user.value?.firstName || '';
+// const lastName = user.value?.lastName || '';
+// const email = user.value?.email || '';
+// const age = user.value?.age || 0;
+// const weight = user.value?.weight || 0;
+//const caloriesGoal = user.value?.caloriesGoal || 0;
 
-const updateProfile = async () => {
-  if (user.value && user.value.id && user.value.firstName && user.value.lastName && user.value.email) {
+
+  const updateProfile = async () => {
+  if (!user) {
+    console.error("User is not set");
+    updateMessage.value = 'User data is not available.';
+    showUpdateModal.value = true;
+    return;
+  }
+  if (user) {
     try {
-      await updateUser(user.value);
+      await updateUser(user);
       updateMessage.value = 'Profile updated successfully!';
       showUpdateModal.value = true;
     } catch (error) {
@@ -50,25 +57,21 @@ onMounted(() => {
         </div>
         <div class="field">
           <label class="label">Last Name</label>
-          <input class="input" type="text" v-model="lastName" placeholder="Enter your last name" />
+          <input class="input" type="text" v-model="user.lastName" placeholder="Enter your last name" />
         </div>
         <div class="field">
           <label class="label">Email</label>
-          <input class="input" type="email" v-model="email" placeholder="Enter your email" />
+          <input class="input" type="email" v-model="user.email" placeholder="Enter your email" />
         </div>
         <div class="field">
           <label class="label">Age</label>
-          <input class="input" type="number" v-model="age" placeholder="Enter your age" />
+          <input class="input" type="number" v-model="user.age" placeholder="Enter your age" />
         </div>
         <div class="field">
           <label class="label">Weight (lb)</label>
-          <input class="input" type="number" v-model="weight" placeholder="Enter your weight" />
+          <input class="input" type="number" v-model="user.weight" placeholder="Enter your weight" />
         </div>
-        <!-- <div class="field">
-          <label class="label">Weekly Calorie Goal</label>
-          <input class="input" type="number" v-model="caloriesGoal" placeholder="Set your weekly calorie goal" />
-        </div> -->
-
+        
       </div>
       <footer class="card-footer">
         <button class="button is-link" @click="updateProfile">Update Profile</button>
