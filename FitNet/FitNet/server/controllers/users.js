@@ -45,7 +45,8 @@ router
       .then(users => {
         if (users.length > 0) {
             res.status(200).send(users);
-        } else {
+        } 
+        else {
             res.status(404).send("No users found");
         }
       })
