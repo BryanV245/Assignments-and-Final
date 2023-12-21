@@ -53,3 +53,7 @@ DELETE  {{baseUrl}}/api/v1/users/delete/6573d14d5eccd922362e1192
 
 ###
 POST {{baseUrl}}/api/v1/users/seed
+
+
+### 
+{{baseUrl}}/api/v1/users/searchUser/br

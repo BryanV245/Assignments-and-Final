@@ -43,7 +43,6 @@ async function getWorkoutsByUser(userId) {
 
 
 async function getWorkoutsById(workoutId) {
-  console.log("deleting workout:", workoutId); // Debugging log
   const col = await getWorkoutCollection();
   return col.find({ workoutId: workoutId }).toArray();
 }

@@ -8,6 +8,7 @@ const {
   get,
   updateUser,
   deleteUser,
+  searchUser,
 } = require("../models/users");
 const router = express.Router();
 
@@ -26,6 +27,33 @@ router
       })
       .catch(next);
   })
+  // .get("/searhUser/:search", (req, res, next) => {
+  //   const { search } = req.params;
+  //   searchUser(search)
+  //     .then((users) => {
+  //       res.send(users);
+  //     })
+  //     .catch(next);
+  // })
+
+  .get("/searchUser/:search", (req, res, next) => {
+    const { search } = req.params;
+    if (!search) {
+        return res.status(400).send("Search query is required");
+    }
+    searchUser(decodeURIComponent(search))
+      .then(users => {
+        if (users.length > 0) {
+            res.status(200).send(users);
+        } else {
+            res.status(404).send("No users found");
+        }
+      })
+      .catch(error => {
+          console.error("Error in searchUser:", error);
+          next(error);
+      });
+})
 
   // Corrected Route to update a user
   .put("/update/user/:id", async (req, res) => {

@@ -31,7 +31,7 @@ export const defaultUser: User = {
 
 // Function to get all users from the server
 export async function getUsers(): Promise<User[]> {
-  return api('/users');
+  return api('/users'); 
 }
 
 // Function to add a new user
@@ -52,4 +52,16 @@ export async function deleteUser(id: string): Promise<void> {
 
 export async function  setWeeklyCaloriesBurned(user: User, weeklyCaloriesBurned: number): Promise<void> {
     await updateUser({...user, weeklyCaloriesBurned: weeklyCaloriesBurned});
+}
+
+//search function
+export async function searchUsers(search: string): Promise<User[]> {
+  try {
+    const encodedSearch = encodeURIComponent(search);
+    const response = await api(`/users/searchUser/${encodedSearch}`);
+    return response;
+  } catch (error) {
+    console.error('Error searching users:', error);
+    throw error; 
+  }
 }

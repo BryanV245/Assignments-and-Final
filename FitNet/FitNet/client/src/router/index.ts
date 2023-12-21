@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, type NavigationGuardNext, type Rout
 import Dashboard from '../views/Dashboard.vue'
 import LoginView from '../views/LoginView.vue'
 import Lifetime from '../views/Lifetime.vue'
+import Search from '../views/Search.vue'
 import { getSession } from '../model/session';
 
 
@@ -43,6 +44,12 @@ const router = createRouter({
       path: "/Lifetime",
       name: "Lifetime",
       component: Lifetime,
+      beforeEnter: requireLogin,
+    },
+    {
+      path: "/Search",
+      name: "Search",
+      component: Search,
       beforeEnter: requireLogin,
     }
   ],

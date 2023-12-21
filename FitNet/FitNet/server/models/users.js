@@ -83,6 +83,26 @@ async function seed() {
   await col.insertMany(data.users);
 }
 
+// Enhanced function for autocomplete
+async function searchUser(search) {
+  const col = await getCollection();
+  const query = {
+    $or: [
+      { firstName: { $regex: search, $options: "i" } },
+      { lastName: { $regex: search, $options: "i" } },
+      { email: { $regex: search, $options: "i" } }
+    ]
+  };
+  const result = await col.find(query).toArray();
+  return result;
+}
+
+
+
+
+
+
+
 function generateJWT(user) {
   return new Promise((resolve, reject) => {
     jwt.sign(user, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN }, (err, token) => {
@@ -111,5 +131,5 @@ function verifyJWT(token) {
 
 
 module.exports = {
-  getAll, get, getCollection, seed, add, generateJWT, verifyJWT, updateUser,deleteUser
+  getAll, searchUser, get, getCollection, seed, add, generateJWT, verifyJWT, updateUser,deleteUser
 };
