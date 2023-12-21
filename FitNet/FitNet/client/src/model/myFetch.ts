@@ -17,6 +17,7 @@ export function rest(url: string, data?: any, method?: string, headers?: any) {
   );
 }
 
+// put function works similar to rest but just handles updates done to database
 export function put(url: string, data?: any, method?: string, headers?: any) {
   return fetch(url, {
     method: 'PUT',
@@ -34,6 +35,7 @@ export function put(url: string, data?: any, method?: string, headers?: any) {
   );
 }
 
+// this api is specifically for update functions
 export function apiPut(url: string, data?: any, method?: string, headers?: any) {
   return put (API_URL + url, data, method, headers);
 }

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { type User, getUsers, searchUsers  } from '@/model/users';
+import { ref, onMounted } from 'vue';
+import { type User, getUsers } from '@/model/users';
 
 const usersIN = ref([] as User[]);
-const searchQuery = ref('');
-const searchedUsers = ref([] as User[]);
 
+
+//loads users from the database
 const loadUsers = async () => {
   try {
     const data = await getUsers();
@@ -15,28 +15,14 @@ const loadUsers = async () => {
   }
 };
 
-const filteredUsers = computed(() => {
-  return usersIN.value.filter(user => 
-    user.firstName.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    user.lastName.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
-});
-
-// const filteredUsers = computed() => {
-//   return await searchUsers(searchQuery.value);
-// }
-
-
-
 onMounted(loadUsers);
 
 </script>
 
 <template>
   <div>
-    <input type="text" v-model="searchQuery" placeholder="Search users..." class="search-bar">
-
-    <div v-for="user in filteredUsers" :key="user.email" class="user-card">
+    <!-- <-- iterate throught retrieved users and show on screen -->
+    <div v-for="user in usersIN" :key="user.email" class="user-card">
       <img :src="user.image" alt="User Image" class="user-image">
       <h2>{{ user.firstName + ' ' + user.lastName }}</h2>
       <p>{{ user.email }}</p>
@@ -63,13 +49,5 @@ onMounted(loadUsers);
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
-}
-
-.search-bar {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
 }
 </style>

@@ -1,31 +1,15 @@
-
-
-
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { getSession } from "@/model/session";
-import {
-  getWorkouts,
-  type Workout,
-} from "@/model/workouts";
+import { getWorkouts, type Workout } from "@/model/workouts";
 
 const user = getSession().user;
 const userID = user?.id;
-
-const workoutName = ref<string>("");
-const workoutDuration = ref<string>("");
-const workoutCalories = ref<string>("");
-const workoutDate = ref<string>("");
-const workoutId = ref<string>("");
-const workoutCompleted = ref<boolean>(false);
-const showModal = ref<boolean>(false);
 const hoveredDay = ref<number | null>(null);
 const customWorkouts = ref<Workout[]>([]);
-
 const currentMonth = ref<number>(new Date().getMonth());
 const currentYear = ref<number>(new Date().getFullYear());
 const selectedDay = ref<number | null>(null);
-
 const daysInMonth = computed<number[]>(() => {
   const days: number[] = [];
   const date = new Date(currentYear.value, currentMonth.value, 1);
@@ -38,6 +22,7 @@ const daysInMonth = computed<number[]>(() => {
   return days;
 });
 
+// Get the name of the current month
 const currentMonthName = computed<string>(() => {
   const months = [
     "January",
@@ -67,7 +52,7 @@ const loadWorkouts = async () => {
   }
 };
 
-
+// Change the month and year
 const changeMonth = (delta: number): void => {
   let newMonth = currentMonth.value + delta;
   let newYear = currentYear.value;
@@ -84,10 +69,12 @@ const changeMonth = (delta: number): void => {
   currentYear.value = newYear;
 };
 
+// Select a day on the calendar
 const selectDay = (day: number): void => {
   selectedDay.value = day;
 };
 
+// Check if a workout is complete for a specific day
 const isWorkoutComplete = (day: number): boolean | null => {
   const workout = customWorkouts.value.find((workout) => {
     const workoutDateObj = new Date(workout.date);
@@ -98,9 +85,11 @@ const isWorkoutComplete = (day: number): boolean | null => {
     );
   });
 
-  return workout && workout.complete !== undefined ? workout.complete : null; 
+  return workout && workout.complete !== undefined ? workout.complete : null;
 };
 
+// Style the calendar days based on the workout completion status
+//red for incomplete, green for completed
 const dayClass = (day: number): string => {
   const today = new Date();
   if (
@@ -118,10 +107,10 @@ const dayClass = (day: number): string => {
     return "workout-incomplete"; // Style for incomplete workouts
   }
 
-  return ""; 
+  return "";
 };
 
-
+// Get the workouts for a specific day for the hover effect
 const getWorkoutDetails = (day: number) => {
   return customWorkouts.value.filter((workout) => {
     const workoutDateObj = new Date(workout.date);
@@ -131,10 +120,7 @@ const getWorkoutDetails = (day: number) => {
       currentYear.value === workoutDateObj.getFullYear()
     );
   });
-
 };
-
-
 
 onMounted(loadWorkouts);
 </script>
@@ -149,10 +135,12 @@ onMounted(loadWorkouts);
     </div>
     <div v-if="hoveredDay" class="workout-details">
       <div v-for="workout in getWorkoutDetails(hoveredDay)" :key="workout._id">
-        <p>{{ workout.name }} - {{ workout.duration }} - {{ workout.calories }} calories</p>
+        <p>
+          {{ workout.name }} - {{ workout.duration }} -
+          {{ workout.calories }} calories
+        </p>
       </div>
     </div>
-
 
     <div class="calendar-grid">
       <div
@@ -174,7 +162,7 @@ onMounted(loadWorkouts);
 </template>
 <style scoped>
 .calendar-container {
-  max-width: 800px; /* Increase the maximum width */
+  max-width: 800px;
   margin: 2rem auto;
   background-color: #444;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -187,10 +175,10 @@ onMounted(loadWorkouts);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px; /* Increase padding for larger header */
+  padding: 20px;
   background-color: #305d6e;
   font-weight: bold;
-  font-size: 1.4em; /* Increase font size for better visibility */
+  font-size: 1.4em;
 }
 
 .calendar-grid {
@@ -200,12 +188,12 @@ onMounted(loadWorkouts);
 }
 
 .calendar-day {
-  padding: 25px; /* Increase padding for larger day cells */
+  padding: 25px;
   background-color: #666;
   transition: background-color 0.3s ease;
   position: relative;
   cursor: pointer;
-  font-size: 1.2em; /* Increase font size inside day cells */
+  font-size: 1.2em;
 }
 
 .calendar-day:hover {

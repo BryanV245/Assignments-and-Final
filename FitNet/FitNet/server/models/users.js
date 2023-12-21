@@ -22,6 +22,7 @@ const jwt = require('jsonwebtoken');
  * @property {number} weeklyCaloriesBurned
  */
 
+//update user function for updating user information
 async function updateUser(id, updates) {
   const col = await getCollection();
 
@@ -42,6 +43,7 @@ async function updateUser(id, updates) {
   return result;
 }
 
+//get the collection
 const COLLECTION_NAME = 'Users';
 async function getCollection() {
   const db = await connect();
@@ -51,7 +53,7 @@ async function getCollection() {
 
 /**
  * @returns {Promise<Users[]>}
- */
+ */ //get all users
 async function getAll() {
   const col = await getCollection();
   return col.find({}).toArray();
@@ -59,31 +61,34 @@ async function getAll() {
 
 /**
  * @param {string} id
- */
+ */ //get user by id - most likely not going to need this
 async function get(id) {
   const col = await getCollection();
   return await col.findOne({ _id: new ObjectId(id) });
 }
 
-
+//add user to the database, register tokenization is done in controller
 async function add(user) {
   const col = await getCollection();
   const result = await col.insertOne(user);
   return result
 }
 
+//delete user
 async function deleteUser(id) {  
   const col = await getCollection();
   const result = await col.deleteOne({ _id: new ObjectId(id) });
   return result;
 }
 
+//seed the json sample data
 async function seed() {
   const col = await getCollection();
   await col.insertMany(data.users);
 }
 
 // Enhanced function for autocomplete
+// FINAL EXAM CODE
 async function searchUser(search) {
   const col = await getCollection();
   const query = {

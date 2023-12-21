@@ -13,6 +13,7 @@ const {
 const router = express.Router();
 
 router
+// rout to get all users
   .get("/", (req, res, next) => {
     getAll()
       .then((users) => {
@@ -20,6 +21,7 @@ router
       })
       .catch(next);
   })
+  // seed the json sample data
   .post("/seed", (req, res, next) => {
     seed()
       .then(() => {
@@ -27,34 +29,17 @@ router
       })
       .catch(next);
   })
-  // .get("/searhUser/:search", (req, res, next) => {
-  //   const { search } = req.params;
-  //   searchUser(search)
-  //     .then((users) => {
-  //       res.send(users);
-  //     })
-  //     .catch(next);
-  // })
 
+  // rout to search user
+  // FINAL EXAM CODE
   .get("/searchUser/:search", (req, res, next) => {
     const { search } = req.params;
-    if (!search) {
-        return res.status(400).send("Search query is required");
-    }
-    searchUser(decodeURIComponent(search))
-      .then(users => {
-        if (users.length > 0) {
-            res.status(200).send(users);
-        } 
-        else {
-            res.status(404).send("No users found");
-        }
+    searchUser(search)
+      .then((users) => {
+        res.send(users);
       })
-      .catch(error => {
-          console.error("Error in searchUser:", error);
-          next(error);
-      });
-})
+      .catch(next);
+  })
 
   // Corrected Route to update a user
   .put("/update/user/:id", async (req, res) => {
@@ -88,6 +73,7 @@ router
     }
   })
 
+  // rout to get user by id
   .get("/:id", (req, res, next) => {
     const { id } = req.params;
     get(id)
@@ -96,6 +82,7 @@ router
       })
       .catch(next);
   })
+  // rout to delete user
   .delete("/delete/:id", (req, res, next) => {
     const { id } = req.params;
     deleteUser(id)
@@ -104,6 +91,7 @@ router
       })
       .catch(next);
   })
+  // rout to add user
   .post("/addUser", (req, res, next) => {
     add(req.body)
       .then((x) => {
@@ -112,7 +100,7 @@ router
       })
       .catch(next);
   })
-  ///api/v1/users/login
+  // rout to login user
   .post("/login", (req, res, next) => {
     //console.log(req.body)
     const { email, password } = req.body;

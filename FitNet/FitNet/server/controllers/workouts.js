@@ -11,6 +11,7 @@ const {
 } = require("../models/workouts");
 
 router
+// rout to add a workout
   .post("/add", (req, res, next) => {
     const workout = req.body;
     if (
@@ -28,6 +29,7 @@ router
       })
       .catch(next);
   })
+  // rout to get all workouts
   .get("/", (req, res, next) => {
     getAll()
       .then((workouts) => {
@@ -35,6 +37,7 @@ router
       })
       .catch(next);
   })
+  // rout to get all workouts by user
   .get("/user/:userId", (req, res, next) => {
     const userId = req.params.userId;
     getWorkoutsByUser(userId)
@@ -43,6 +46,7 @@ router
       })
       .catch(next);
   })
+  // rout to delete all workouts by user
   .delete("/deleteAll/user/:userId", (req, res, next) => {
     const userId = req.params.userId;
     deleteAll(userId)
@@ -52,6 +56,7 @@ router
     .catch(next);
   })
 
+  // rout to delete a workout by id
   .delete("/delete/workout/:workoutId", (req, res, next) => {
     const { workoutId } = req.params;
     deleteWorkout(workoutId)
@@ -60,7 +65,7 @@ router
       })
       .catch(next);
   })
-  
+  // rout to update a workout by object id
   .put("/update/workout/:workoutId", async (req, res) => {
     try {
       const workoutId = req.params.workoutId; // Get the workout ID from the URL
@@ -91,6 +96,7 @@ router
       });
     }
   })
+  // rout to get weekly workouts
   .get("/user/weekly/:userId", (req, res, next) => {
     const userId = req.params.userId;
     getWeeklyWorkouts(userId)

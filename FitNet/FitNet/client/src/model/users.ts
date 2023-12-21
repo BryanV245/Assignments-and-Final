@@ -49,12 +49,14 @@ export async function deleteUser(id: string): Promise<void> {
   return api(`/users/delete/${id}`, undefined, 'DELETE'); 
 }
 
-
+// set weekly calories burned
 export async function  setWeeklyCaloriesBurned(user: User, weeklyCaloriesBurned: number): Promise<void> {
     await updateUser({...user, weeklyCaloriesBurned: weeklyCaloriesBurned});
 }
 
 //search function
+// Function to search for users
+//FINAL EXAM CODE 
 export async function searchUsers(search: string): Promise<User[]> {
   try {
     const encodedSearch = encodeURIComponent(search);

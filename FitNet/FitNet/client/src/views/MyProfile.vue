@@ -13,6 +13,8 @@ const email = ref(user?.email || "");
 const age = ref(user?.age || 0);
 const weight = ref(user?.weight || 0);
 
+
+//update the user profile and display a message
 const updateProfile = async () => {
   if (!user) {
     console.error("User is not set");
@@ -41,6 +43,7 @@ const updateProfile = async () => {
   }
 };
 
+//once updated, modal will close
 const closeModal = () => {
   showUpdateModal.value = false;
 };

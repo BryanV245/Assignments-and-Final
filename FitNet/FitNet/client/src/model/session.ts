@@ -23,7 +23,7 @@ export function showError(err: any){
   console.error(err);
   alert(err.message || err);
 }
-
+//this api is specifically for update functions
 export function api2(action: string, body?: unknown, method?: string){
   return myFetch.apiPut(`${action}`, body, method)
     .catch(err=> showError(err))

@@ -10,6 +10,8 @@ const doLogin = () => {
   login(email.value, password.value);
 };
 
+
+//default user
 const email = ref("bryan.vasquez@live.com");
 const password = ref("1234");
 

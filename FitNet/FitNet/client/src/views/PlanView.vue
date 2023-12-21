@@ -32,6 +32,7 @@ const loadWorkouts = async () => {
   }
 };
 
+//structure for the day of the week
 const getDayOfWeek = (dateStr: string): string => {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const date = new Date(dateStr);
@@ -39,6 +40,7 @@ const getDayOfWeek = (dateStr: string): string => {
 };
 
 
+//add a workout to the database
 const handleAddWorkout = async () => {
   if (!userID) {
     console.error("User ID is missing");
@@ -68,6 +70,7 @@ const handleAddWorkout = async () => {
   resetForm();
 };
 
+//deleqte a workout from the database
 const handleDeleteWorkout = async (workoutId: string) => {
   try {
     await deleteWorkout(workoutId);
@@ -77,7 +80,7 @@ const handleDeleteWorkout = async (workoutId: string) => {
   }
 };
 
-
+//toggle the status of a workout (check box)
 const toggleWorkoutStatus = async (workout: Workout) => {
   try {
     // Only update if the workout is currently incomplete
@@ -91,6 +94,7 @@ const toggleWorkoutStatus = async (workout: Workout) => {
     console.error('Error updating workout:', error);
   }
 };
+
 
 const resetForm = () => {
   workoutName.value = "";

@@ -5,6 +5,7 @@ import { getUsers, deleteUser, updateUser } from "@/model/users";
 
 const usersIN = ref([] as User[]);
 
+//loads users from the database
 const loadUsers = async () => {
   try {
     const data = await getUsers();
@@ -16,6 +17,7 @@ const loadUsers = async () => {
 
 onMounted(loadUsers);
 
+//delete a user from the database
 const handleRemoveUser = async (id: string) => {
   try {
     await deleteUser(id);
@@ -24,6 +26,8 @@ const handleRemoveUser = async (id: string) => {
     console.error("Error deleting user:", error);
   }
 };
+
+//update a user's role to admin
 const handleMakeAdmin = async (user: User) => {
   try {
     await updateUser({ ...user, role: "admin" });

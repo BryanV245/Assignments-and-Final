@@ -1,10 +1,19 @@
 <script setup lang="ts">
+
+
+
+//IN CLASS FINAL EXAM CODE
+
+
+
 import { ref, watch } from 'vue';
 import { type User, searchUsers } from '@/model/users';
 
 const searchQuery = ref('');
 const searchedUsers = ref([] as User[]);
 
+
+// watch the searchQuery ref for changes
 watch(searchQuery, async (newQuery) => {
   if (newQuery) {
     try {
@@ -18,8 +27,11 @@ watch(searchQuery, async (newQuery) => {
   }
 });
 
+// escape regex characters in a string
 const escapeRegex = (text: string) => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
+
+// highlight a match in a string
 const highlightMatch = (text: string, query: string) => {
   if (!query) return text;
   const escapedQuery = escapeRegex(query);
@@ -33,8 +45,8 @@ const highlightMatch = (text: string, query: string) => {
 
 <template>
   <div>
+    <!-- <-- Search bar -->
     <input type="text" v-model="searchQuery" placeholder="Search users..." class="search-bar">
-
     <div v-for="user in searchedUsers" :key="user.email" class="user-card">
       <img :src="user.image" alt="User Image" class="user-image">
       <h2 v-html="highlightMatch(user.firstName + ' ' + user.lastName, searchQuery)"></h2>
