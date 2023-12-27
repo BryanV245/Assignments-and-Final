@@ -9,32 +9,16 @@ const session = reactive({
   user: null as User | null,
   token: null as string | null,
   redirectUrl: null as string | null,
-  messages: [] as {
-    type: string,
-    text: string
-  }[],
-  loading: 0
 })
 
 export function getSession(){
   return session;
 }
 
-
-
-export function api(action: string, body?: unknown, method?: string, headers?: any){
-  session.loading++;
-
-  if(session.token){
-    headers = headers ?? {};
-    headers['Authorization'] = `Bearer ${session.token}`;
-  }
-
-  return myFetch.api(`${action}`, body, method, headers)
+export function api(action: string, body?: unknown, method?: string){
+  return myFetch.api(`${action}`, body, method)
     .catch(err=> showError(err))
-    .finally(()=> session.loading--);
 }
-
 export function showError(err: any){
   console.error(err);
   alert(err.message || err);

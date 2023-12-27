@@ -68,10 +68,28 @@ async function get(id) {
 }
 
 //add user to the database, register tokenization is done in controller
+// async function add(user) {
+//   const col = await getCollection();
+//   const result = await col.insertOne(user);
+//   return result
+// }
+
 async function add(user) {
   const col = await getCollection();
+
+  // Generate a unique numerical ID
+  let uniqueId;
+  while (true) {
+    uniqueId = Math.floor(Math.random() * 1000000); // Random number between 0 and 999999
+    const existingUser = await col.findOne({ id: uniqueId });
+    if (!existingUser) {
+      break; // Exit the loop if the ID is unique
+    }
+  }
+  // Add the unique ID to the user object
+  user.id = uniqueId;
   const result = await col.insertOne(user);
-  return result
+  return result;
 }
 
 //delete user

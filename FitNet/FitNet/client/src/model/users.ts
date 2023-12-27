@@ -2,7 +2,7 @@
 import { api } from "./session";
 
 export interface User {
-  _id: string;  
+  _id?: string;  
   id: number;
   firstName: string;
   lastName: string;
@@ -19,7 +19,6 @@ export interface User {
 }
 
 export const defaultUser: User = {
-  _id: '',
   id: 0,
   firstName: '',
   lastName: '',
